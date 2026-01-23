@@ -386,13 +386,18 @@ class CareerAgentOrchestrator:
         return self.progress_tracker.get_next_step(session_id)
 
 
-def load_data_files(data_dir: str = "./data") -> tuple:
+def load_data_files(data_dir: str = None) -> tuple:
     """
     Load all required data files
     
     Returns:
         (job_market, career_paths, skills_taxonomy, learning_resources)
     """
+    from pathlib import Path
+    
+    # Use absolute path based on this file's location if data_dir not provided
+    if data_dir is None:
+        data_dir = str(Path(__file__).parent / "data")
     
     with open(f"{data_dir}/job_market.json", "r") as f:
         job_market = json.load(f)
