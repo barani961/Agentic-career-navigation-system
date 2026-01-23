@@ -12,7 +12,7 @@ class LLMClient:
     Groq LLM client for career agent system
     """
     
-    def __init__(self, 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: Optional[str] = None, model: str = "llama-3.3-70b-versatile"):
+    def __init__(self, api_key: Optional[str] = None, model: str = "llama-3.3-70b-versatile"):
         """
         Initialize Groq client
         
