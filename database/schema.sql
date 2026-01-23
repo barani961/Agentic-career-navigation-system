@@ -82,6 +82,9 @@ CREATE TABLE IF NOT EXISTS blockers (
     category VARCHAR(100),  -- skill_difficulty, time_constraint, motivation, technical
     attempts INTEGER DEFAULT 1,
     
+    -- Alternate paths (stored as JSONB)
+    alternate_paths JSONB,  -- Array of alternative approaches/roadmaps for this blocker
+    
     -- Status
     resolved BOOLEAN DEFAULT FALSE,
     resolution_note TEXT,

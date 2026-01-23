@@ -9,6 +9,10 @@ from pathlib import Path
 # Add parent directory to path so we can import modules from root
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -36,7 +40,7 @@ class AssessmentRequest(BaseModel):
 class ProgressUpdateRequest(BaseModel):
     session_id: str
     step_number: int
-    status: str  # "completed" or "blocked"
+    status: str  # "completed", "blocked", or "in_progress"
     time_spent_hours: Optional[float] = None
     blocker_reason: Optional[str] = None
 
@@ -226,7 +230,22 @@ def update_progress(
     """
     
     try:
-        if request.status == "completed":
+        # Handle status updates
+        if request.status == "in_progress":
+            # Update step status to in_progress
+            db.update_step_status(
+                session_id=request.session_id,
+                step_number=request.step_number,
+                status="in_progress"
+            )
+            
+            summary = db.get_journey_summary(request.session_id)
+            return {
+                "success": True,
+                "progress": summary["progress"]
+            }
+        
+        elif request.status == "completed":
             # Record completion
             db.record_step_completion(
                 session_id=request.session_id,
@@ -253,11 +272,17 @@ def update_progress(
             if not request.blocker_reason:
                 raise HTTPException(status_code=400, detail="blocker_reason required for blocked status")
             
-            db.record_blocker(
+            # Generate alternate paths for this blocker
+            alternate_paths = _generate_alternate_paths_for_blocker(
+                db, orch, request.session_id, request.step_number, request.blocker_reason
+            )
+            
+            blocker_id = db.record_blocker(
                 session_id=request.session_id,
                 step_number=request.step_number,
                 reason=request.blocker_reason,
-                category="skill_difficulty"
+                category="skill_difficulty",
+                alternate_paths=alternate_paths
             )
         
         # Check if re-evaluation needed
@@ -273,11 +298,22 @@ def update_progress(
         # Get updated summary
         summary = db.get_journey_summary(request.session_id)
         
+        # Get blocker info if status was blocked
+        blocker_info = None
+        if request.status == "blocked":
+            blocker = db.get_blocker_by_step(request.session_id, request.step_number)
+            if blocker:
+                blocker_info = {
+                    "blocker_id": blocker['id'],
+                    "alternate_paths": blocker.get('alternate_paths', [])
+                }
+        
         return {
             "success": True,
             "progress": summary["progress"],
             "should_reevaluate": should_reevaluate,
-            "reevaluation": reevaluation_result
+            "reevaluation": reevaluation_result,
+            "blocker_info": blocker_info
         }
         
     except Exception as e:
@@ -434,6 +470,76 @@ def resume_journey(
     try:
         db.update_journey_status(session_id, "active")
         return {"success": True, "status": "active"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/blocker/{blocker_id}/alternate-paths")
+def get_blocker_alternate_paths(
+    blocker_id: int,
+    db: DatabaseManager = Depends(get_db)
+):
+    """Get alternate paths for a specific blocker"""
+    try:
+        blocker = db.get_blocker(blocker_id)
+        if not blocker:
+            raise HTTPException(status_code=404, detail="Blocker not found")
+        
+        return {
+            "blocker_id": blocker_id,
+            "step_number": blocker['step_number'],
+            "reason": blocker['reason'],
+            "alternate_paths": blocker.get('alternate_paths', [])
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/journey/{session_id}/step/{step_number}/blocker")
+def get_step_blocker(
+    session_id: str,
+    step_number: int,
+    db: DatabaseManager = Depends(get_db)
+):
+    """Get blocker information for a specific step"""
+    try:
+        blocker = db.get_blocker_by_step(session_id, step_number)
+        if not blocker:
+            raise HTTPException(status_code=404, detail="No active blocker found for this step")
+        
+        return {
+            "blocker": blocker,
+            "alternate_paths": blocker.get('alternate_paths', [])
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/blocker/{blocker_id}/generate-alternates")
+def generate_alternate_paths(
+    blocker_id: int,
+    db: DatabaseManager = Depends(get_db),
+    orch: CareerAgentOrchestrator = Depends(get_orchestrator)
+):
+    """Generate alternate paths for a blocker"""
+    try:
+        blocker = db.get_blocker(blocker_id)
+        if not blocker:
+            raise HTTPException(status_code=404, detail="Blocker not found")
+        
+        # Generate alternate paths
+        alternate_paths = _generate_alternate_paths_for_blocker(
+            db, orch, blocker['session_id'], blocker['step_number'], blocker['reason']
+        )
+        
+        # Update blocker with new paths
+        db.update_blocker_alternate_paths(blocker_id, alternate_paths)
+        
+        return {
+            "success": True,
+            "blocker_id": blocker_id,
+            "alternate_paths": alternate_paths
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -605,6 +711,122 @@ def _get_reevaluation_message(action: str, trigger_count: int) -> str:
         return f"We've detected {trigger_count} concern(s) with your current path. Here are some alternatives that might work better."
     else:
         return "Regular progress check - you're doing well! Keep going."
+
+
+def _generate_alternate_paths_for_blocker(
+    db: DatabaseManager,
+    orch: CareerAgentOrchestrator,
+    session_id: str,
+    step_number: int,
+    blocker_reason: str
+) -> List[Dict]:
+    """
+    Generate alternate paths/approaches when a step is blocked
+    
+    Returns:
+        List of alternate path suggestions
+    """
+    try:
+        # Get journey and current step
+        journey = db.get_journey(session_id)
+        roadmap = journey['roadmap']
+        
+        if step_number > len(roadmap):
+            return []
+        
+        current_step = roadmap[step_number - 1]
+        student_profile = journey['student_profile']
+        
+        # Get skills learned so far
+        skills_learned = db.get_skills_learned(session_id)
+        learned_skill_names = [s['skill_name'] for s in skills_learned]
+        
+        # Update profile with learned skills
+        if "technical_skills" not in student_profile:
+            student_profile["technical_skills"] = {}
+        if "learned" not in student_profile["technical_skills"]:
+            student_profile["technical_skills"]["learned"] = []
+        student_profile["technical_skills"]["learned"].extend(learned_skill_names)
+        
+        # Generate alternate approaches using LLM
+        # This could be enhanced to use the reroute agent or a dedicated alternate path generator
+        alternate_paths = []
+        
+        # Approach 1: Suggest prerequisite steps or easier alternatives
+        # Approach 2: Suggest different learning resources
+        # Approach 3: Suggest breaking down the step into smaller parts
+        
+        # For now, create rule-based alternatives
+        step_title = current_step.get('title', '')
+        step_description = current_step.get('description', '')
+        
+        # Alternative 1: Break into smaller steps
+        alternate_paths.append({
+            "type": "breakdown",
+            "title": f"Break down '{step_title}' into smaller steps",
+            "description": f"Instead of tackling this step all at once, we can break it into 3-4 smaller, more manageable sub-steps.",
+            "steps": [
+                f"Review fundamentals related to {step_title}",
+                f"Practice basic exercises for {step_title}",
+                f"Build a small project using {step_title}",
+                f"Complete the full {step_title} step"
+            ],
+            "estimated_weeks": current_step.get('duration_weeks', 2) + 1,
+            "difficulty": "easier"
+        })
+        
+        # Alternative 2: Prerequisite learning
+        if blocker_reason.lower() in ['difficult', 'hard', 'complex', 'confusing', 'don\'t understand']:
+            alternate_paths.append({
+                "type": "prerequisites",
+                "title": f"Learn prerequisites for '{step_title}'",
+                "description": f"Before tackling this step, let's strengthen your foundation in related concepts.",
+                "steps": [
+                    "Review foundational concepts",
+                    "Complete prerequisite tutorials",
+                    "Practice with simpler examples",
+                    "Return to the original step"
+                ],
+                "estimated_weeks": current_step.get('duration_weeks', 2),
+                "difficulty": "easier"
+            })
+        
+        # Alternative 3: Different learning approach
+        alternate_paths.append({
+            "type": "alternative_approach",
+            "title": f"Try a different learning approach for '{step_title}'",
+            "description": f"Sometimes a different teaching style or resource can make all the difference.",
+            "steps": [
+                "Try video tutorials instead of text",
+                "Join a study group or community",
+                "Find hands-on projects",
+                "Get mentorship or tutoring"
+            ],
+            "estimated_weeks": current_step.get('duration_weeks', 2),
+            "difficulty": "similar"
+        })
+        
+        # Alternative 4: Skip and come back (if not critical)
+        if step_number > 1:  # Don't suggest skipping the first step
+            alternate_paths.append({
+                "type": "skip_and_return",
+                "title": f"Skip '{step_title}' temporarily",
+                "description": f"You can move forward to the next steps and come back to this one later with more experience.",
+                "steps": [
+                    "Mark this step as 'skip for now'",
+                    "Continue with next steps",
+                    "Return to this step after gaining more experience"
+                ],
+                "estimated_weeks": 0,  # No additional time
+                "difficulty": "easier",
+                "warning": "Only skip if this step is not a prerequisite for future steps"
+            })
+        
+        return alternate_paths
+        
+    except Exception as e:
+        print(f"Error generating alternate paths: {e}")
+        return []
 
 
 # ========== RUN SERVER ==========

@@ -8,6 +8,10 @@ import requests
 import json
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # ========== CONFIGURATION ==========
 
@@ -114,6 +118,10 @@ def call_api(endpoint, method="GET", data=None):
             response = requests.get(url)
         elif method == "POST":
             response = requests.post(url, json=data)
+        elif method == "PUT":
+            response = requests.put(url, json=data)
+        elif method == "DELETE":
+            response = requests.delete(url)
         
         if response.status_code == 200:
             return response.json(), None
@@ -433,11 +441,28 @@ def roadmap_tab(journey, steps):
                 if step_progress and step_progress.get('time_spent_hours'):
                     st.markdown(f"**Time Spent:** {step_progress['time_spent_hours']:.1f}h")
                 
+                # Show blocker reason if blocked (in the main card area)
+                if status == "blocked":
+                    blocker_info, blocker_error = call_api(f"/api/journey/{st.session_state.session_id}/step/{step_data['step_number']}/blocker")
+                    if blocker_info and not blocker_error and blocker_info.get('blocker', {}).get('reason'):
+                        st.markdown("---")
+                        st.markdown(f"**🚫 Blocker:** {blocker_info['blocker']['reason'][:100]}...")
+                
                 # Action buttons based on status
                 if status == "not_started":
                     if st.button(f"▶️ Start Step", key=f"start_{step_data['step_number']}", use_container_width=True):
-                        st.session_state[f'step_action_{step_data["step_number"]}'] = 'in_progress'
-                        st.rerun()
+                        # Update step status to in_progress
+                        data = {
+                            "session_id": st.session_state.session_id,
+                            "step_number": step_data['step_number'],
+                            "status": "in_progress"
+                        }
+                        result, error = call_api("/api/progress", method="POST", data=data)
+                        if not error:
+                            st.success(f"✅ Step {step_data['step_number']} started!")
+                            st.rerun()
+                        else:
+                            st.error(f"Failed to start step: {error}")
                 
                 elif status == "in_progress":
                     st.markdown("**What do you want to do?**")
@@ -509,11 +534,87 @@ def roadmap_tab(journey, steps):
                 
                 elif status == "blocked":
                     st.error("🚫 Blocked")
-                    if step_progress and step_progress.get('last_reported'):
-                        st.caption(f"Blocked on: {step_progress['last_reported'][:10]}")
-                    if st.button("🔄 Retry Step", key=f"retry_{step_data['step_number']}", use_container_width=True):
-                        st.session_state[f'step_action_{step_data["step_number"]}'] = 'in_progress'
-                        st.rerun()
+                    
+                    # Get blocker information
+                    blocker_info, blocker_error = call_api(f"/api/journey/{st.session_state.session_id}/step/{step_data['step_number']}/blocker")
+                    
+                    if blocker_info and not blocker_error:
+                        blocker = blocker_info.get('blocker', {})
+                        alternate_paths = blocker_info.get('alternate_paths', [])
+                        
+                        # Show blocker reason
+                        if blocker.get('reason'):
+                            st.markdown(f"**Reason:** {blocker['reason']}")
+                        
+                        if blocker.get('last_reported'):
+                            st.caption(f"Blocked on: {blocker['last_reported'][:10]}")
+                        
+                        if blocker.get('attempts'):
+                            st.caption(f"Attempts: {blocker['attempts']}")
+                        
+                        # Show alternate paths
+                        if alternate_paths:
+                            st.markdown("---")
+                            st.markdown("### 🔄 Alternate Paths")
+                            st.info("Here are some alternative approaches you can try:")
+                            
+                            for i, alt_path in enumerate(alternate_paths):
+                                with st.expander(f"💡 {alt_path.get('title', f'Alternative {i+1}')}", expanded=(i == 0)):
+                                    st.markdown(f"**{alt_path.get('description', '')}**")
+                                    
+                                    if alt_path.get('steps'):
+                                        st.markdown("**Steps:**")
+                                        for j, step in enumerate(alt_path['steps'], 1):
+                                            st.markdown(f"{j}. {step}")
+                                    
+                                    col_info1, col_info2 = st.columns(2)
+                                    with col_info1:
+                                        st.caption(f"⏱️ Estimated: {alt_path.get('estimated_weeks', 'N/A')} weeks")
+                                    with col_info2:
+                                        difficulty = alt_path.get('difficulty', 'similar')
+                                        difficulty_color = {
+                                            'easier': '🟢',
+                                            'similar': '🟡',
+                                            'harder': '🔴'
+                                        }.get(difficulty, '🟡')
+                                        st.caption(f"{difficulty_color} Difficulty: {difficulty.title()}")
+                                    
+                                    if alt_path.get('warning'):
+                                        st.warning(alt_path['warning'])
+                                    
+                                    # Button to apply this alternate path
+                                    if st.button(f"✅ Use This Approach", key=f"use_alt_{step_data['step_number']}_{i}", use_container_width=True):
+                                        st.info(f"💡 This would help you work around the blocker. Implementation coming soon!")
+                        else:
+                            # Generate alternate paths if not available
+                            if st.button("🔄 Generate Alternate Paths", key=f"gen_alt_{step_data['step_number']}", use_container_width=True):
+                                with st.spinner("Generating alternate paths..."):
+                                    blocker_id = blocker.get('id')
+                                    if blocker_id:
+                                        result, error = call_api(f"/api/blocker/{blocker_id}/generate-alternates", method="POST")
+                                        if not error:
+                                            st.success("Alternate paths generated! Refresh to see them.")
+                                            st.rerun()
+                    
+                    # Action buttons
+                    col_retry, col_resolve = st.columns(2)
+                    with col_retry:
+                        if st.button("🔄 Retry Step", key=f"retry_{step_data['step_number']}", use_container_width=True):
+                            # Update step status back to in_progress
+                            data = {
+                                "session_id": st.session_state.session_id,
+                                "step_number": step_data['step_number'],
+                                "status": "in_progress"
+                            }
+                            result, error = call_api("/api/progress", method="POST", data=data)
+                            if not error:
+                                st.success("Step status updated to in progress!")
+                                st.rerun()
+                    
+                    with col_resolve:
+                        if st.button("✅ Mark Resolved", key=f"resolve_{step_data['step_number']}", use_container_width=True):
+                            # This would mark the blocker as resolved
+                            st.info("Blocker resolution feature coming soon!")
             
             st.markdown('</div>', unsafe_allow_html=True)
             st.markdown("---")
@@ -557,22 +658,84 @@ def blockers_tab(blockers, steps):
     st.markdown("### 🚫 Active Blockers")
     
     for blocker in blockers:
-        with st.expander(f"Step {blocker['step_number']} - {blocker['reason'][:50]}...", expanded=True):
+        # Get step title
+        step_title = "Unknown Step"
+        for step in steps:
+            if step['step_number'] == blocker['step_number']:
+                # Try to get step title from journey
+                journey_result, _ = call_api(f"/api/journey/{st.session_state.session_id}/summary")
+                if journey_result:
+                    roadmap = journey_result.get('journey', {}).get('roadmap', [])
+                    if blocker['step_number'] <= len(roadmap):
+                        step_title = roadmap[blocker['step_number'] - 1].get('title', f"Step {blocker['step_number']}")
+                break
+        
+        with st.expander(f"🚫 Step {blocker['step_number']}: {step_title} - {blocker['reason'][:50]}...", expanded=True):
             st.markdown(f"**Reason:** {blocker['reason']}")
             st.markdown(f"**Attempts:** {blocker['attempts']}")
             st.markdown(f"**First Reported:** {blocker['first_reported'][:10]}")
             st.markdown(f"**Last Reported:** {blocker['last_reported'][:10]}")
             
-            col1, col2 = st.columns(2)
+            # Show alternate paths
+            alternate_paths = blocker.get('alternate_paths', [])
+            if alternate_paths:
+                st.markdown("---")
+                st.markdown("### 🔄 Alternate Paths Available")
+                for i, alt_path in enumerate(alternate_paths):
+                    with st.expander(f"💡 {alt_path.get('title', f'Alternative {i+1}')}", expanded=False):
+                        st.markdown(f"**{alt_path.get('description', '')}**")
+                        
+                        if alt_path.get('steps'):
+                            st.markdown("**Steps:**")
+                            for j, step in enumerate(alt_path['steps'], 1):
+                                st.markdown(f"{j}. {step}")
+                        
+                        col_info1, col_info2 = st.columns(2)
+                        with col_info1:
+                            st.caption(f"⏱️ Estimated: {alt_path.get('estimated_weeks', 'N/A')} weeks")
+                        with col_info2:
+                            difficulty = alt_path.get('difficulty', 'similar')
+                            difficulty_color = {
+                                'easier': '🟢',
+                                'similar': '🟡',
+                                'harder': '🔴'
+                            }.get(difficulty, '🟡')
+                            st.caption(f"{difficulty_color} Difficulty: {difficulty.title()}")
+                        
+                        if alt_path.get('warning'):
+                            st.warning(alt_path['warning'])
+            else:
+                # Generate alternate paths button
+                if st.button(f"🔄 Generate Alternate Paths", key=f"gen_alt_blocker_{blocker['id']}"):
+                    with st.spinner("Generating alternate paths..."):
+                        result, error = call_api(f"/api/blocker/{blocker['id']}/generate-alternates", method="POST")
+                        if not error:
+                            st.success("Alternate paths generated! Refresh to see them.")
+                            st.rerun()
+            
+            st.markdown("---")
+            col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button(f"✅ Mark Resolved", key=f"resolve_{blocker['id']}"):
-                    # In real app: call API to resolve blocker
-                    st.success("Blocker resolved!")
+                if st.button(f"✅ Mark Resolved", key=f"resolve_{blocker['id']}", use_container_width=True):
+                    # Call API to resolve blocker
+                    st.info("Blocker resolution API coming soon!")
             
             with col2:
-                if st.button(f"🔄 Update", key=f"update_{blocker['id']}"):
-                    # In real app: report blocker again
-                    st.info("Report blocker again to increment attempts")
+                if st.button(f"🔄 Retry Step", key=f"retry_blocker_{blocker['id']}", use_container_width=True):
+                    # Update step status back to in_progress
+                    data = {
+                        "session_id": st.session_state.session_id,
+                        "step_number": blocker['step_number'],
+                        "status": "in_progress"
+                    }
+                    result, error = call_api("/api/progress", method="POST", data=data)
+                    if not error:
+                        st.success("Step status updated to in progress!")
+                        st.rerun()
+            
+            with col3:
+                if st.button(f"📝 Update Blocker", key=f"update_{blocker['id']}", use_container_width=True):
+                    st.info("Use the roadmap tab to report an updated blocker reason")
 
 def analytics_tab(summary):
     """Show analytics and insights"""
