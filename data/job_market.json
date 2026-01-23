@@ -1,0 +1,385 @@
+{
+  "roles": {
+    "Data Analyst": {
+      "market_data": {
+        "total_jobs": 3890,
+        "data_source": "Naukri.com, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 12.5,
+        "last_updated": "2026-01-20"
+      },
+      "skills": {
+        "must_have": [
+          {"name": "SQL", "frequency": 0.95, "avg_learning_weeks": 4},
+          {"name": "Excel", "frequency": 0.92, "avg_learning_weeks": 2},
+          {"name": "Python", "frequency": 0.75, "avg_learning_weeks": 8},
+          {"name": "Tableau", "frequency": 0.70, "avg_learning_weeks": 3}
+        ],
+        "nice_to_have": [
+          {"name": "R", "frequency": 0.35, "avg_learning_weeks": 6}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 400000, "max": 700000, "currency": "INR"},
+        "mid_level": {"min": 800000, "max": 1200000, "currency": "INR"}
+      },
+      "requirements": {
+        "education": ["B.Tech", "Any degree with statistics"],
+        "experience": "0-2 years",
+        "entry_barrier": 0.4,
+        "freshers_accepted": true
+      }
+    },
+
+    "Software Engineer": {
+      "market_data": {
+        "total_jobs": 5432,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 15.3
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Python/Java", "frequency": 0.92, "avg_learning_weeks": 8},
+          {"name": "Data Structures & Algorithms", "frequency": 0.89, "avg_learning_weeks": 12},
+          {"name": "Git", "frequency": 0.85, "avg_learning_weeks": 2},
+          {"name": "SQL", "frequency": 0.78, "avg_learning_weeks": 4}
+        ],
+        "nice_to_have": [
+          {"name": "Docker", "frequency": 0.45, "avg_learning_weeks": 3},
+          {"name": "AWS", "frequency": 0.38, "avg_learning_weeks": 4}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 600000, "max": 1000000, "currency": "INR"},
+        "mid_level": {"min": 1200000, "max": 2000000, "currency": "INR"}
+      },
+      "requirements": {
+        "education": ["B.Tech CS/IT", "Any Engineering + coding bootcamp"],
+        "experience": "0-2 years for entry-level",
+        "entry_barrier": 0.6
+      }
+    },
+
+    "ML Engineer": {
+      "market_data": {
+        "total_jobs": 1256,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 22.5
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Python", "frequency": 0.98, "avg_learning_weeks": 8},
+          {"name": "Machine Learning", "frequency": 0.95, "avg_learning_weeks": 16},
+          {"name": "Statistics", "frequency": 0.88, "avg_learning_weeks": 12},
+          {"name": "TensorFlow", "frequency": 0.82, "avg_learning_weeks": 10}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 1000000, "max": 1500000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.85,
+        "typical_background": "MS in CS or 3+ years experience"
+      }
+    },
+
+    "Backend Engineer": {
+      "market_data": {
+        "total_jobs": 3620,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 13.8
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Java/Python/Node.js", "frequency": 0.94, "avg_learning_weeks": 8},
+          {"name": "Databases", "frequency": 0.90, "avg_learning_weeks": 6},
+          {"name": "REST APIs", "frequency": 0.88, "avg_learning_weeks": 4}
+        ],
+        "nice_to_have": [
+          {"name": "Microservices", "frequency": 0.55, "avg_learning_weeks": 5}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 700000, "max": 1100000, "currency": "INR"},
+        "mid_level": {"min": 1400000, "max": 2400000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.55,
+        "experience": "0-2 years"
+      }
+    },
+
+    "Frontend Engineer": {
+      "market_data": {
+        "total_jobs": 2980,
+        "data_source": "Naukri.com, Jan 2026",
+        "trend": "stable",
+        "growth_rate_yoy": 9.1
+      },
+      "skills": {
+        "must_have": [
+          {"name": "HTML/CSS", "frequency": 0.96, "avg_learning_weeks": 3},
+          {"name": "JavaScript", "frequency": 0.94, "avg_learning_weeks": 6},
+          {"name": "React", "frequency": 0.78, "avg_learning_weeks": 6}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 500000, "max": 900000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.45,
+        "freshers_accepted": true
+      }
+    },
+
+    "DevOps Engineer": {
+      "market_data": {
+        "total_jobs": 2140,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 18.6
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Linux", "frequency": 0.94, "avg_learning_weeks": 4},
+          {"name": "Docker", "frequency": 0.90, "avg_learning_weeks": 4},
+          {"name": "CI/CD", "frequency": 0.88, "avg_learning_weeks": 4},
+          {"name": "AWS/Azure", "frequency": 0.85, "avg_learning_weeks": 6}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 800000, "max": 1200000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.75,
+        "experience": "1-3 years"
+      }
+    },
+
+    "Cloud Engineer": {
+      "market_data": {
+        "total_jobs": 1950,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 20.2
+      },
+      "skills": {
+        "must_have": [
+          {"name": "AWS/GCP/Azure", "frequency": 0.97, "avg_learning_weeks": 6},
+          {"name": "Networking Basics", "frequency": 0.82, "avg_learning_weeks": 4},
+          {"name": "Terraform", "frequency": 0.60, "avg_learning_weeks": 4}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 700000, "max": 1100000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.7
+      }
+    },
+
+    "Cybersecurity Analyst": {
+      "market_data": {
+        "total_jobs": 1710,
+        "data_source": "Indeed India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 17.9
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Network Security", "frequency": 0.92, "avg_learning_weeks": 6},
+          {"name": "Linux", "frequency": 0.85, "avg_learning_weeks": 4},
+          {"name": "Security Tools", "frequency": 0.80, "avg_learning_weeks": 6}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 600000, "max": 900000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.65
+      }
+    },
+
+    "Data Engineer": {
+      "market_data": {
+        "total_jobs": 1650,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 19.3
+      },
+      "skills": {
+        "must_have": [
+          {"name": "SQL", "frequency": 0.95, "avg_learning_weeks": 4},
+          {"name": "ETL Pipelines", "frequency": 0.88, "avg_learning_weeks": 6},
+          {"name": "Spark", "frequency": 0.75, "avg_learning_weeks": 6}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 800000, "max": 1200000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.7
+      }
+    },
+
+    "Business Analyst": {
+      "market_data": {
+        "total_jobs": 2240,
+        "data_source": "Naukri.com, Jan 2026",
+        "trend": "stable",
+        "growth_rate_yoy": 8.1
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Excel", "frequency": 0.92, "avg_learning_weeks": 2},
+          {"name": "SQL", "frequency": 0.75, "avg_learning_weeks": 4},
+          {"name": "Requirement Analysis", "frequency": 0.85, "avg_learning_weeks": 3}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 500000, "max": 800000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.35,
+        "freshers_accepted": true
+      }
+    },
+
+    "QA Engineer": {
+      "market_data": {
+        "total_jobs": 2980,
+        "data_source": "Indeed India, Jan 2026",
+        "trend": "stable",
+        "growth_rate_yoy": 6.4
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Manual Testing", "frequency": 0.95, "avg_learning_weeks": 2},
+          {"name": "Automation Testing", "frequency": 0.70, "avg_learning_weeks": 5},
+          {"name": "Selenium", "frequency": 0.65, "avg_learning_weeks": 4}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 350000, "max": 600000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.3,
+        "freshers_accepted": true
+      }
+    },
+
+    "Product Manager": {
+      "market_data": {
+        "total_jobs": 1420,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 11.4
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Product Thinking", "frequency": 0.91, "avg_learning_weeks": 6},
+          {"name": "Stakeholder Management", "frequency": 0.86, "avg_learning_weeks": 4},
+          {"name": "Analytics", "frequency": 0.78, "avg_learning_weeks": 4}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 1000000, "max": 1500000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.8,
+        "experience": "2+ years"
+      }
+    },
+
+    "UI/UX Designer": {
+      "market_data": {
+        "total_jobs": 1860,
+        "data_source": "Behance Jobs, Jan 2026",
+        "trend": "stable",
+        "growth_rate_yoy": 7.5
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Figma", "frequency": 0.94, "avg_learning_weeks": 3},
+          {"name": "User Research", "frequency": 0.82, "avg_learning_weeks": 4},
+          {"name": "Wireframing", "frequency": 0.78, "avg_learning_weeks": 2}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 450000, "max": 750000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.4
+      }
+    },
+
+    "AI Prompt Engineer": {
+      "market_data": {
+        "total_jobs": 820,
+        "data_source": "LinkedIn Global, Jan 2026",
+        "trend": "growing",
+        "growth_rate_yoy": 35.2
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Prompt Engineering", "frequency": 0.95, "avg_learning_weeks": 2},
+          {"name": "LLM APIs", "frequency": 0.85, "avg_learning_weeks": 3},
+          {"name": "Python", "frequency": 0.70, "avg_learning_weeks": 6}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 800000, "max": 1200000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.5
+      }
+    },
+
+    "AR/VR Developer": {
+      "market_data": {
+        "total_jobs": 610,
+        "data_source": "LinkedIn India, Jan 2026",
+        "trend": "emerging",
+        "growth_rate_yoy": 27.6
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Unity", "frequency": 0.90, "avg_learning_weeks": 6},
+          {"name": "C#", "frequency": 0.85, "avg_learning_weeks": 6},
+          {"name": "3D Math", "frequency": 0.72, "avg_learning_weeks": 8}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 600000, "max": 1000000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.75
+      }
+    },
+
+    "Blockchain Developer": {
+      "market_data": {
+        "total_jobs": 940,
+        "data_source": "CryptoJobsList, Jan 2026",
+        "trend": "volatile",
+        "growth_rate_yoy": 12.1
+      },
+      "skills": {
+        "must_have": [
+          {"name": "Solidity", "frequency": 0.92, "avg_learning_weeks": 6},
+          {"name": "Smart Contracts", "frequency": 0.88, "avg_learning_weeks": 6},
+          {"name": "Web3", "frequency": 0.80, "avg_learning_weeks": 4}
+        ]
+      },
+      "salary": {
+        "entry_level": {"min": 800000, "max": 1400000, "currency": "INR"}
+      },
+      "requirements": {
+        "entry_barrier": 0.8
+      }
+    }
+  }
+}

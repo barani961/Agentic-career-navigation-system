@@ -1,0 +1,302 @@
+{
+  "career_graph": {
+
+    "Data Analyst": {
+      "typical_next_roles": [
+        {
+          "role": "Data Scientist",
+          "transition_probability": 0.45,
+          "avg_time_years": 2,
+          "additional_skills_needed": ["Statistics", "ML Algorithms", "Advanced Python"]
+        },
+        {
+          "role": "Business Analyst",
+          "transition_probability": 0.30,
+          "avg_time_years": 1.5
+        },
+        {
+          "role": "ML Engineer",
+          "transition_probability": 0.15,
+          "avg_time_years": 3,
+          "additional_skills_needed": ["Deep Learning", "MLOps"]
+        }
+      ],
+      "common_entry_from": ["Excel Analyst", "Intern", "Graduate"],
+      "stepping_stone_to": ["Data Scientist", "ML Engineer", "Analytics Manager"]
+    },
+
+    "Business Analyst": {
+      "typical_next_roles": [
+        {
+          "role": "Product Manager",
+          "transition_probability": 0.40,
+          "avg_time_years": 2,
+          "additional_skills_needed": ["Product Thinking", "Stakeholder Management"]
+        },
+        {
+          "role": "Analytics Manager",
+          "transition_probability": 0.25,
+          "avg_time_years": 3
+        }
+      ],
+      "stepping_stone_to": ["Product Manager", "Strategy Consultant"]
+    },
+
+    "Software Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Senior Software Engineer",
+          "transition_probability": 0.65,
+          "avg_time_years": 3
+        },
+        {
+          "role": "Backend Engineer",
+          "transition_probability": 0.30,
+          "avg_time_years": 2
+        }
+      ],
+      "stepping_stone_to": ["Tech Lead", "Architect"]
+    },
+
+    "Backend Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Full Stack Developer",
+          "transition_probability": 0.55,
+          "avg_time_years": 2
+        },
+        {
+          "role": "Data Engineer",
+          "transition_probability": 0.25,
+          "avg_time_years": 2,
+          "additional_skills_needed": ["ETL", "Big Data"]
+        }
+      ]
+    },
+
+    "Frontend Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Full Stack Developer",
+          "transition_probability": 0.60,
+          "avg_time_years": 2,
+          "additional_skills_needed": ["Backend", "Databases"]
+        },
+        {
+          "role": "UI/UX Designer",
+          "transition_probability": 0.20,
+          "avg_time_years": 1
+        }
+      ]
+    },
+
+    "Full Stack Developer": {
+      "typical_next_roles": [
+        {
+          "role": "Tech Lead",
+          "transition_probability": 0.45,
+          "avg_time_years": 3
+        },
+        {
+          "role": "Startup Founder",
+          "transition_probability": 0.15,
+          "avg_time_years": 4
+        }
+      ]
+    },
+
+    "QA Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Automation Engineer",
+          "transition_probability": 0.50,
+          "avg_time_years": 1.5,
+          "additional_skills_needed": ["Selenium", "CI/CD"]
+        },
+        {
+          "role": "DevOps Engineer",
+          "transition_probability": 0.20,
+          "avg_time_years": 2.5
+        }
+      ],
+      "stepping_stone_to": ["Software Engineer"]
+    },
+
+    "Automation Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "DevOps Engineer",
+          "transition_probability": 0.45,
+          "avg_time_years": 2
+        }
+      ]
+    },
+
+    "DevOps Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Cloud Engineer",
+          "transition_probability": 0.55,
+          "avg_time_years": 2
+        },
+        {
+          "role": "Site Reliability Engineer",
+          "transition_probability": 0.30,
+          "avg_time_years": 2.5
+        }
+      ]
+    },
+
+    "Cloud Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Solutions Architect",
+          "transition_probability": 0.50,
+          "avg_time_years": 3
+        }
+      ]
+    },
+
+    "Data Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "ML Engineer",
+          "transition_probability": 0.35,
+          "avg_time_years": 2.5,
+          "additional_skills_needed": ["ML Algorithms", "Model Deployment"]
+        },
+        {
+          "role": "Analytics Engineer",
+          "transition_probability": 0.30,
+          "avg_time_years": 2
+        }
+      ]
+    },
+
+    "ML Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Senior ML Engineer",
+          "transition_probability": 0.50,
+          "avg_time_years": 3
+        },
+        {
+          "role": "AI Architect",
+          "transition_probability": 0.20,
+          "avg_time_years": 4
+        }
+      ]
+    },
+
+    "AI Prompt Engineer": {
+      "typical_next_roles": [
+        {
+          "role": "Applied AI Engineer",
+          "transition_probability": 0.55,
+          "avg_time_years": 1.5
+        },
+        {
+          "role": "AI Product Manager",
+          "transition_probability": 0.20,
+          "avg_time_years": 2
+        }
+      ]
+    },
+
+    "Cybersecurity Analyst": {
+      "typical_next_roles": [
+        {
+          "role": "Security Engineer",
+          "transition_probability": 0.50,
+          "avg_time_years": 2
+        },
+        {
+          "role": "Security Architect",
+          "transition_probability": 0.20,
+          "avg_time_years": 4
+        }
+      ]
+    },
+
+    "UI/UX Designer": {
+      "typical_next_roles": [
+        {
+          "role": "Product Designer",
+          "transition_probability": 0.60,
+          "avg_time_years": 2
+        }
+      ]
+    },
+
+    "Product Manager": {
+      "typical_next_roles": [
+        {
+          "role": "Senior Product Manager",
+          "transition_probability": 0.55,
+          "avg_time_years": 3
+        },
+        {
+          "role": "Head of Product",
+          "transition_probability": 0.20,
+          "avg_time_years": 5
+        }
+      ]
+    },
+
+    "AR/VR Developer": {
+      "typical_next_roles": [
+        {
+          "role": "XR Engineer",
+          "transition_probability": 0.50,
+          "avg_time_years": 2
+        }
+      ]
+    },
+
+    "Blockchain Developer": {
+      "typical_next_roles": [
+        {
+          "role": "Web3 Architect",
+          "transition_probability": 0.35,
+          "avg_time_years": 3
+        }
+      ]
+    }
+  },
+
+  "stepping_stones": {
+
+    "ML Engineer": [
+      {
+        "intermediate_role": "Data Analyst",
+        "rationale": "Build statistics and data intuition",
+        "skill_overlap": 0.65,
+        "recommended": true
+      },
+      {
+        "intermediate_role": "Data Engineer",
+        "rationale": "Strong data pipelines help ML systems",
+        "skill_overlap": 0.60,
+        "recommended": true
+      }
+    ],
+
+    "Product Manager": [
+      {
+        "intermediate_role": "Business Analyst",
+        "rationale": "Requirement analysis and stakeholder exposure",
+        "skill_overlap": 0.70,
+        "recommended": true
+      }
+    ],
+
+    "DevOps Engineer": [
+      {
+        "intermediate_role": "QA Engineer",
+        "rationale": "Automation and CI exposure",
+        "skill_overlap": 0.55,
+        "recommended": true
+      }
+    ]
+  }
+}

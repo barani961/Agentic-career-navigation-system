@@ -1,0 +1,395 @@
+{
+  "status": "success",
+  "verdict": "CHALLENGING",
+  "path_type": "choice",
+  "target_role": "ML Engineer",
+  "profile": {
+    "technical_skills": {
+      "programming": [
+        "Python"
+      ]
+    },
+    "proficiency_map": {
+      "Python": "beginner",
+      "DSA": "beginner"
+    },
+    "soft_skills": [],
+    "experience_level": "intermediate",
+    "strength_areas": [],
+    "weakness_areas": [
+      "Programming",
+      "Databases",
+      "Web Development",
+      "Data Science"
+    ],
+    "learning_capacity": "low",
+    "education": "3rd year B.Tech Computer Science",
+    "projects_count": 1,
+    "raw_extracted_skills": {
+      "programming_languages": [
+        "Python"
+      ],
+      "frameworks": [],
+      "libraries": [],
+      "tools": [],
+      "databases": [],
+      "domains": [],
+      "soft_skills": [],
+      "proficiency_estimates": {
+        "Python": "beginner",
+        "DSA": "beginner"
+      }
+    }
+  },
+  "market_analysis": {
+    "role": "ML Engineer",
+    "demand_score": 55,
+    "active_jobs": 1256,
+    "trend": "growing",
+    "growth_rate": 22.5,
+    "avg_salary_range": "\u20b910.0-15.0 LPA",
+    "entry_salary_min": 1000000,
+    "entry_salary_max": 1500000,
+    "entry_barrier": 0.85,
+    "entry_barrier_label": "very_high",
+    "required_skills": {
+      "must_have": [
+        "Python",
+        "Machine Learning",
+        "Statistics",
+        "TensorFlow"
+      ],
+      "nice_to_have": []
+    },
+    "skill_match": 0.25,
+    "missing_skills": [
+      "Machine Learning",
+      "Statistics",
+      "TensorFlow"
+    ],
+    "missing_skills_count": 3,
+    "competition_level": "very_high",
+    "freshers_accepted": false,
+    "estimated_time_to_job": "9-12 months",
+    "data_source": "LinkedIn India, Jan 2026",
+    "last_updated": "Unknown"
+  },
+  "feasibility": {
+    "verdict": "CHALLENGING",
+    "confidence": "medium",
+    "action": "offer_choice",
+    "feasibility_score": 0.56,
+    "factor_scores": {
+      "skill_match": 0.4,
+      "market_demand": 0.65,
+      "entry_barrier": 0.6,
+      "time_to_competency": 0.8
+    },
+    "reasons": [
+      {
+        "type": "skill_gap",
+        "severity": "high",
+        "title": "Significant Skill Gap",
+        "explanation": "You currently have only 25% of the required skills. Missing 3 critical skills.",
+        "impact": "Would require 6-12 months of intensive learning",
+        "missing_skills": [
+          "Machine Learning",
+          "Statistics",
+          "TensorFlow"
+        ]
+      }
+    ],
+    "explanation": "I understand that becoming an ML Engineer is a goal you're passionate about, but the significant skill gap you're facing, particularly in critical areas like Machine Learning, Statistics, and TensorFlow, may make it a challenging and time-consuming pursuit. With only 25% of the required skills, it may take around 9-12 months of dedicated learning to bridge this gap, which can be daunting. Considering your intermediate experience level, it might be worth exploring alternative paths that leverage your existing skills and can lead to more immediate opportunities, allowing you to grow and potentially transition into ML engineering in the future.",
+    "recommendation": "High effort required - consider alternatives or commit to intensive learning"
+  },
+  "direct_path": {
+    "roadmap": {
+      "roadmap": [
+        {
+          "step_number": 1,
+          "title": "Master TensorFlow Fundamentals",
+          "description": "Learn TensorFlow basics, including installation, tensor operations, automatic differentiation, and basic model implementation",
+          "duration_weeks": 4,
+          "success_metric": "Implement 5 TensorFlow models from scratch, complete the official TensorFlow tutorial",
+          "why_important": "Required by 80% of ML Engineer roles, builds foundation for ML development",
+          "skills_covered": [
+            "TensorFlow",
+            "Python"
+          ],
+          "resources": [
+            {
+              "title": "Python for Everybody",
+              "url": "https://www.py4e.com/",
+              "type": "video_course",
+              "duration_hours": 40,
+              "difficulty": "beginner",
+              "rating": 4.7,
+              "free": true
+            },
+            {
+              "title": "Automate the Boring Stuff with Python",
+              "url": "https://automatetheboringstuff.com/",
+              "type": "book",
+              "difficulty": "beginner",
+              "free": true
+            }
+          ]
+        },
+        {
+          "step_number": 2,
+          "title": "Learn Statistics and Machine Learning Basics",
+          "description": "Study probability theory, statistical inference, supervised and unsupervised learning, regression, and classification",
+          "duration_weeks": 4,
+          "success_metric": "Complete 10 statistical problems on Kaggle, build 3 ML models using scikit-learn",
+          "why_important": "Essential for understanding ML concepts, required by 90% of ML Engineer roles",
+          "skills_covered": [
+            "Statistics",
+            "Machine Learning"
+          ],
+          "resources": [
+            {
+              "title": "Google ML Crash Course",
+              "url": "https://developers.google.com/machine-learning/crash-course",
+              "type": "interactive",
+              "duration_hours": 15,
+              "difficulty": "intermediate",
+              "free": true
+            },
+            {
+              "title": "Kaggle Learn Machine Learning",
+              "url": "https://www.kaggle.com/learn/machine-learning",
+              "type": "interactive",
+              "duration_hours": 10,
+              "difficulty": "beginner",
+              "free": true
+            }
+          ]
+        },
+        {
+          "step_number": 3,
+          "title": "Apply Machine Learning with TensorFlow",
+          "description": "Learn to implement ML algorithms using TensorFlow, including neural networks, convolutional neural networks, and recurrent neural networks",
+          "duration_weeks": 4,
+          "success_metric": "Implement 5 ML projects using TensorFlow, participate in 2 Kaggle competitions",
+          "why_important": "High demand for ML Engineers with TensorFlow skills, required by 1256 jobs",
+          "skills_covered": [
+            "Machine Learning",
+            "TensorFlow"
+          ],
+          "resources": [
+            {
+              "title": "Google ML Crash Course",
+              "url": "https://developers.google.com/machine-learning/crash-course",
+              "type": "interactive",
+              "duration_hours": 15,
+              "difficulty": "intermediate",
+              "free": true
+            },
+            {
+              "title": "Kaggle Learn Machine Learning",
+              "url": "https://www.kaggle.com/learn/machine-learning",
+              "type": "interactive",
+              "duration_hours": 10,
+              "difficulty": "beginner",
+              "free": true
+            }
+          ]
+        },
+        {
+          "step_number": 4,
+          "title": "Build Portfolio Project: House Price Prediction",
+          "description": "End-to-end ML project with evaluation",
+          "duration_weeks": 2,
+          "success_metric": "Complete project, deploy to GitHub, write documentation",
+          "why_important": "Portfolio projects are mentioned in 94% of job postings",
+          "skills_covered": [
+            "TensorFlow",
+            "Statistics",
+            "Machine Learning"
+          ],
+          "resources": [
+            {
+              "title": "GitHub Repository Guide",
+              "url": "https://guides.github.com/",
+              "type": "documentation"
+            }
+          ],
+          "project_details": {
+            "title": "House Price Prediction",
+            "description": "End-to-end ML project with evaluation",
+            "skills_demonstrated": [
+              "Machine Learning",
+              "Python",
+              "Statistics"
+            ],
+            "difficulty": "intermediate",
+            "estimated_hours": 35,
+            "dataset_url": "https://www.kaggle.com/c/house-prices-advanced-regression-techniques"
+          }
+        }
+      ],
+      "total_duration_weeks": 14,
+      "total_duration_months": 3.5,
+      "market_alignment_score": 1.0,
+      "skills_covered": 3,
+      "target_role": "ML Engineer"
+    },
+    "difficulty": "high",
+    "warning": "High effort required - consider alternatives or commit to intensive learning"
+  },
+  "alternative_paths": [
+    {
+      "role": "Data Analyst",
+      "total_score": 0.718,
+      "breakdown": {
+        "total_score": 0.718,
+        "skill_overlap": 0.25,
+        "market_demand": 1.0,
+        "progression_potential": 0.9,
+        "ease_of_entry": 1.0
+      },
+      "market_analysis": {
+        "total_jobs": 3890,
+        "trend": "growing",
+        "growth_rate": 12.5,
+        "salary_range": "\u20b94.0-7.0 LPA",
+        "entry_barrier": 0.4,
+        "freshers_accepted": true
+      },
+      "justification": "Pursuing a career as a Data Analyst offers numerous advantages, with 3890 active job openings providing a wider range of opportunities compared to ML Engineer. With a significantly lower entry barrier of 40%, you can leverage your intermediate experience level to secure a role with a competitive salary of \u20b94.0-7.0 LPA. Additionally, this path can serve as a strategic stepping stone, with a 90% probability of transitioning to an ML Engineer role in the future. By starting as a Data Analyst, you can gain valuable experience and build a strong foundation for a successful and versatile career in the field.",
+      "roadmap": {
+        "roadmap": [
+          {
+            "step_number": 1,
+            "title": "Master Excel Fundamentals",
+            "description": "Learn basic Excel functions, data manipulation, and visualization using charts and pivot tables",
+            "duration_weeks": 2,
+            "success_metric": "Complete 20 Excel exercises, create 5 interactive dashboards",
+            "why_important": "Foundational skill for data analysis, required by 80% of Data Analyst roles",
+            "skills_covered": [
+              "Excel"
+            ],
+            "resources": [
+              {
+                "title": "Excel for Data Analysis",
+                "url": "https://www.youtube.com/watch?v=Vl0H-qTclOg",
+                "type": "video_playlist",
+                "duration_hours": 8,
+                "difficulty": "beginner",
+                "free": true
+              },
+              {
+                "title": "Kaggle Learn Excel",
+                "url": "https://www.kaggle.com/learn/advanced-excel",
+                "type": "interactive",
+                "duration_hours": 6,
+                "difficulty": "beginner-intermediate",
+                "free": true
+              }
+            ]
+          },
+          {
+            "step_number": 2,
+            "title": "Learn SQL Basics and Data Modeling",
+            "description": "Learn SQL SELECT, JOIN, WHERE, GROUP BY, and basic database design principles",
+            "duration_weeks": 2,
+            "success_metric": "Complete 20 SQL problems on HackerRank, design 2 simple database schemas",
+            "why_important": "Essential skill for data analysis, required by 75% of Data Analyst roles",
+            "skills_covered": [
+              "SQL"
+            ],
+            "resources": [
+              {
+                "title": "Mode Analytics SQL Tutorial",
+                "url": "https://mode.com/sql-tutorial/",
+                "type": "interactive",
+                "duration_hours": 10,
+                "difficulty": "beginner",
+                "rating": 4.8,
+                "free": true
+              },
+              {
+                "title": "SQLZoo",
+                "url": "https://sqlzoo.net/",
+                "type": "practice",
+                "duration_hours": 15,
+                "difficulty": "beginner-intermediate",
+                "free": true
+              }
+            ]
+          },
+          {
+            "step_number": 3,
+            "title": "Apply Data Visualization with Tableau",
+            "description": "Learn Tableau basics, connect to data sources, create interactive dashboards, and practice data storytelling",
+            "duration_weeks": 2,
+            "success_metric": "Create 3 interactive Tableau dashboards, publish 1 dashboard on Tableau Public",
+            "why_important": "High-demand skill for data visualization, required by 50% of Data Analyst roles",
+            "skills_covered": [
+              "Tableau"
+            ],
+            "resources": []
+          },
+          {
+            "step_number": 4,
+            "title": "Build Portfolio Project: COVID-19 Data Analysis Dashboard",
+            "description": "Analyze COVID trends using Python + Tableau",
+            "duration_weeks": 2,
+            "success_metric": "Complete project, deploy to GitHub, write documentation",
+            "why_important": "Portfolio projects are mentioned in 94% of job postings",
+            "skills_covered": [
+              "Excel",
+              "SQL",
+              "Tableau"
+            ],
+            "resources": [
+              {
+                "title": "GitHub Repository Guide",
+                "url": "https://guides.github.com/",
+                "type": "documentation"
+              }
+            ],
+            "project_details": {
+              "title": "COVID-19 Data Analysis Dashboard",
+              "description": "Analyze COVID trends using Python + Tableau",
+              "skills_demonstrated": [
+                "SQL",
+                "Python",
+                "Data Visualization"
+              ],
+              "difficulty": "beginner",
+              "estimated_hours": 20,
+              "dataset_url": "https://ourworldindata.org/coronavirus"
+            }
+          }
+        ],
+        "total_duration_weeks": 8,
+        "total_duration_months": 2.0,
+        "market_alignment_score": 0.75,
+        "skills_covered": 3,
+        "target_role": "Data Analyst"
+      }
+    },
+    {
+      "role": "Backend Engineer",
+      "total_score": 0.555,
+      "breakdown": {
+        "total_score": 0.555,
+        "skill_overlap": 0.333,
+        "market_demand": 1.0,
+        "progression_potential": 0.0,
+        "ease_of_entry": 0.925
+      },
+      "market_analysis": {
+        "total_jobs": 3620,
+        "trend": "growing",
+        "growth_rate": 13.8,
+        "salary_range": "\u20b97.0-11.0 LPA",
+        "entry_barrier": 0.55,
+        "freshers_accepted": false
+      },
+      "justification": "As an intermediate-level professional, pursuing a career as a Backend Engineer offers a more promising outlook, with 3620 active job openings and a lower entry barrier of 55%, making it more accessible than the highly competitive ML Engineer role. With a salary range of \u20b97.0-11.0 LPA and a growing trend, this path aligns with your strengths and provides a stable foundation for growth. Although it may not directly lead back to an ML Engineer role, the skills you develop as a Backend Engineer will be highly transferable and valuable in the industry. By choosing this career path, you can capitalize on the numerous job opportunities and set yourself up for long-term success."
+    }
+  ],
+  "message": "ML Engineer is achievable but challenging. Consider these options:"
+}

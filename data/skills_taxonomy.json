@@ -1,0 +1,326 @@
+{
+  "skills": {
+
+    "python": {
+      "canonical_name": "Python",
+      "category": "Programming Language",
+      "aliases": ["python3", "py"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 8,
+      "related_skills": ["Django", "Flask", "Pandas", "NumPy"],
+      "job_demand_score": 95
+    },
+
+    "java": {
+      "canonical_name": "Java",
+      "category": "Programming Language",
+      "aliases": ["java8", "spring java"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 10,
+      "related_skills": ["Spring Boot", "JVM"],
+      "job_demand_score": 90
+    },
+
+    "javascript": {
+      "canonical_name": "JavaScript",
+      "category": "Programming Language",
+      "aliases": ["js", "ecmascript"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 6,
+      "related_skills": ["React", "Node.js"],
+      "job_demand_score": 94
+    },
+
+    "c_plus_plus": {
+      "canonical_name": "C++",
+      "category": "Programming Language",
+      "aliases": ["cpp"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 12,
+      "related_skills": ["Data Structures", "Competitive Programming"],
+      "job_demand_score": 75
+    },
+
+    "sql": {
+      "canonical_name": "SQL",
+      "category": "Database",
+      "aliases": ["MySQL", "PostgreSQL", "T-SQL"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 4,
+      "related_skills": ["Database Design", "Query Optimization"],
+      "job_demand_score": 88
+    },
+
+    "nosql": {
+      "canonical_name": "NoSQL Databases",
+      "category": "Database",
+      "aliases": ["MongoDB", "Cassandra"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 4,
+      "related_skills": ["Database Modeling"],
+      "job_demand_score": 70
+    },
+
+    "data_structures": {
+      "canonical_name": "Data Structures & Algorithms",
+      "category": "Computer Science",
+      "aliases": ["DSA", "Algorithms"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 12,
+      "related_skills": ["Problem Solving"],
+      "job_demand_score": 92
+    },
+
+    "git": {
+      "canonical_name": "Git",
+      "category": "Version Control",
+      "aliases": ["git version control"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 2,
+      "related_skills": ["GitHub", "CI/CD"],
+      "job_demand_score": 85
+    },
+
+    "react": {
+      "canonical_name": "React",
+      "category": "Web Development",
+      "aliases": ["reactjs"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 6,
+      "related_skills": ["JavaScript", "Frontend Development"],
+      "job_demand_score": 90
+    },
+
+    "html_css": {
+      "canonical_name": "HTML & CSS",
+      "category": "Web Development",
+      "aliases": ["html", "css"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 3,
+      "related_skills": ["Responsive Design"],
+      "job_demand_score": 65
+    },
+
+    "nodejs": {
+      "canonical_name": "Node.js",
+      "category": "Backend Development",
+      "aliases": ["node"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 5,
+      "related_skills": ["APIs", "JavaScript"],
+      "job_demand_score": 80
+    },
+
+    "django": {
+      "canonical_name": "Django",
+      "category": "Backend Development",
+      "aliases": ["django framework"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 5,
+      "related_skills": ["Python", "Web APIs"],
+      "job_demand_score": 72
+    },
+
+    "rest_apis": {
+      "canonical_name": "REST APIs",
+      "category": "Backend Development",
+      "aliases": ["api development"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 3,
+      "related_skills": ["HTTP", "Backend Systems"],
+      "job_demand_score": 88
+    },
+
+    "excel": {
+      "canonical_name": "Excel",
+      "category": "Data & Analytics",
+      "aliases": ["spreadsheets"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 2,
+      "related_skills": ["Data Analysis"],
+      "job_demand_score": 90
+    },
+
+    "tableau": {
+      "canonical_name": "Tableau",
+      "category": "Data Visualization",
+      "aliases": ["tableau desktop"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 3,
+      "related_skills": ["Data Storytelling"],
+      "job_demand_score": 75
+    },
+
+    "power_bi": {
+      "canonical_name": "Power BI",
+      "category": "Data Visualization",
+      "aliases": ["powerbi"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 3,
+      "related_skills": ["Business Intelligence"],
+      "job_demand_score": 78
+    },
+
+    "statistics": {
+      "canonical_name": "Statistics",
+      "category": "Mathematics",
+      "aliases": ["probability", "statistical analysis"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 10,
+      "related_skills": ["Machine Learning"],
+      "job_demand_score": 80
+    },
+
+    "machine_learning": {
+      "canonical_name": "Machine Learning",
+      "category": "AI/ML",
+      "aliases": ["ML"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 16,
+      "prerequisites": ["Python", "Statistics"],
+      "job_demand_score": 75
+    },
+
+    "deep_learning": {
+      "canonical_name": "Deep Learning",
+      "category": "AI/ML",
+      "aliases": ["DL", "Neural Networks"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 14,
+      "related_skills": ["TensorFlow", "PyTorch"],
+      "job_demand_score": 70
+    },
+
+    "tensorflow": {
+      "canonical_name": "TensorFlow",
+      "category": "AI/ML",
+      "aliases": ["tf"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 6,
+      "related_skills": ["Deep Learning"],
+      "job_demand_score": 68
+    },
+
+    "pytorch": {
+      "canonical_name": "PyTorch",
+      "category": "AI/ML",
+      "aliases": ["torch"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 6,
+      "related_skills": ["Deep Learning"],
+      "job_demand_score": 72
+    },
+
+    "aws": {
+      "canonical_name": "AWS",
+      "category": "Cloud & DevOps",
+      "aliases": ["amazon web services"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 6,
+      "related_skills": ["Cloud Architecture"],
+      "job_demand_score": 90
+    },
+
+    "docker": {
+      "canonical_name": "Docker",
+      "category": "Cloud & DevOps",
+      "aliases": ["containerization"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 3,
+      "related_skills": ["Kubernetes"],
+      "job_demand_score": 85
+    },
+
+    "kubernetes": {
+      "canonical_name": "Kubernetes",
+      "category": "Cloud & DevOps",
+      "aliases": ["k8s"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 6,
+      "related_skills": ["Docker", "DevOps"],
+      "job_demand_score": 80
+    },
+
+    "ci_cd": {
+      "canonical_name": "CI/CD",
+      "category": "Cloud & DevOps",
+      "aliases": ["continuous integration"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 3,
+      "related_skills": ["Git", "DevOps"],
+      "job_demand_score": 78
+    },
+
+    "linux": {
+      "canonical_name": "Linux",
+      "category": "Operating Systems",
+      "aliases": ["unix"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 4,
+      "related_skills": ["DevOps", "Security"],
+      "job_demand_score": 85
+    },
+
+    "cyber_security": {
+      "canonical_name": "Cybersecurity",
+      "category": "Security",
+      "aliases": ["information security"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 10,
+      "related_skills": ["Network Security"],
+      "job_demand_score": 82
+    },
+
+    "prompt_engineering": {
+      "canonical_name": "Prompt Engineering",
+      "category": "AI/Applied AI",
+      "aliases": ["llm prompting"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 2,
+      "related_skills": ["LLM APIs"],
+      "job_demand_score": 78
+    },
+
+    "system_design": {
+      "canonical_name": "System Design",
+      "category": "Computer Science",
+      "aliases": ["high level design"],
+      "difficulty": "hard",
+      "avg_learning_weeks": 10,
+      "related_skills": ["Backend Engineering"],
+      "job_demand_score": 88
+    },
+
+    "communication": {
+      "canonical_name": "Communication",
+      "category": "Soft Skills",
+      "aliases": ["verbal skills"],
+      "difficulty": "easy",
+      "avg_learning_weeks": 2,
+      "related_skills": ["Stakeholder Management"],
+      "job_demand_score": 55
+    },
+
+    "problem_solving": {
+      "canonical_name": "Problem Solving",
+      "category": "Soft Skills",
+      "aliases": ["analytical thinking"],
+      "difficulty": "medium",
+      "avg_learning_weeks": 6,
+      "related_skills": ["Algorithms"],
+      "job_demand_score": 98
+    }
+
+  },
+
+  "skill_categories": {
+    "Programming Languages": ["Python", "Java", "JavaScript", "C++"],
+    "Web Development": ["React", "HTML & CSS", "Node.js", "Django"],
+    "Backend & Systems": ["REST APIs", "System Design"],
+    "Data & Analytics": ["SQL", "Excel", "Tableau", "Power BI", "Statistics"],
+    "AI/ML": ["Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "Prompt Engineering"],
+    "Cloud & DevOps": ["AWS", "Docker", "Kubernetes", "CI/CD", "Linux"],
+    "Security": ["Cybersecurity"],
+    "Soft Skills": ["Communication", "Problem Solving"]
+  }
+}

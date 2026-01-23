@@ -1,0 +1,7 @@
+# Core dependencies
+groq>=0.4.0
+ollama>=0.1.6
+google-generativeai>=0.3.0
+
+# Optional for development
+python-dotenv>=1.0.0

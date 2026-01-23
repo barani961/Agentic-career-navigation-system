@@ -1,0 +1,491 @@
+{
+  "resources": {
+
+    "SQL": [
+      {
+        "title": "Mode Analytics SQL Tutorial",
+        "url": "https://mode.com/sql-tutorial/",
+        "type": "interactive",
+        "duration_hours": 10,
+        "difficulty": "beginner",
+        "rating": 4.8,
+        "free": true
+      },
+      {
+        "title": "SQLZoo",
+        "url": "https://sqlzoo.net/",
+        "type": "practice",
+        "duration_hours": 15,
+        "difficulty": "beginner-intermediate",
+        "free": true
+      },
+      {
+        "title": "Kaggle Learn SQL",
+        "url": "https://www.kaggle.com/learn/intro-to-sql",
+        "type": "interactive",
+        "duration_hours": 8,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Python": [
+      {
+        "title": "Python for Everybody",
+        "url": "https://www.py4e.com/",
+        "type": "video_course",
+        "duration_hours": 40,
+        "difficulty": "beginner",
+        "rating": 4.7,
+        "free": true
+      },
+      {
+        "title": "Automate the Boring Stuff with Python",
+        "url": "https://automatetheboringstuff.com/",
+        "type": "book",
+        "difficulty": "beginner",
+        "free": true
+      },
+      {
+        "title": "freeCodeCamp Python",
+        "url": "https://www.freecodecamp.org/learn/scientific-computing-with-python/",
+        "type": "interactive",
+        "duration_hours": 30,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Excel": [
+      {
+        "title": "Excel for Data Analysis",
+        "url": "https://www.youtube.com/watch?v=Vl0H-qTclOg",
+        "type": "video_playlist",
+        "duration_hours": 8,
+        "difficulty": "beginner",
+        "free": true
+      },
+      {
+        "title": "Kaggle Learn Excel",
+        "url": "https://www.kaggle.com/learn/advanced-excel",
+        "type": "interactive",
+        "duration_hours": 6,
+        "difficulty": "beginner-intermediate",
+        "free": true
+      }
+    ],
+
+    "Data Visualization": [
+      {
+        "title": "Tableau Free Training Videos",
+        "url": "https://www.tableau.com/learn/training",
+        "type": "video_course",
+        "duration_hours": 12,
+        "difficulty": "beginner",
+        "free": true
+      },
+      {
+        "title": "Power BI Full Course",
+        "url": "https://www.youtube.com/watch?v=AGrl-H87pRU",
+        "type": "video_course",
+        "duration_hours": 10,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Data Structures & Algorithms": [
+      {
+        "title": "freeCodeCamp DSA",
+        "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/",
+        "type": "interactive",
+        "duration_hours": 40,
+        "difficulty": "beginner-intermediate",
+        "free": true
+      },
+      {
+        "title": "NeetCode DSA Roadmap",
+        "url": "https://neetcode.io/",
+        "type": "practice",
+        "difficulty": "intermediate",
+        "free": true
+      }
+    ],
+
+    "Machine Learning": [
+      {
+        "title": "Google ML Crash Course",
+        "url": "https://developers.google.com/machine-learning/crash-course",
+        "type": "interactive",
+        "duration_hours": 15,
+        "difficulty": "intermediate",
+        "free": true
+      },
+      {
+        "title": "Kaggle Learn Machine Learning",
+        "url": "https://www.kaggle.com/learn/machine-learning",
+        "type": "interactive",
+        "duration_hours": 10,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Deep Learning": [
+      {
+        "title": "Deep Learning with PyTorch",
+        "url": "https://www.youtube.com/watch?v=GIsg-ZUy0MY",
+        "type": "video_course",
+        "duration_hours": 18,
+        "difficulty": "intermediate",
+        "free": true
+      }
+    ],
+
+    "Cloud Computing": [
+      {
+        "title": "AWS Cloud Practitioner Essentials",
+        "url": "https://explore.skillbuilder.aws/learn/course/134",
+        "type": "video_course",
+        "duration_hours": 12,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Docker": [
+      {
+        "title": "Docker for Beginners",
+        "url": "https://www.youtube.com/watch?v=fqMOX6JJhGo",
+        "type": "video_course",
+        "duration_hours": 6,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Git": [
+      {
+        "title": "Git & GitHub Crash Course",
+        "url": "https://www.youtube.com/watch?v=RGOj5yH7evk",
+        "type": "video_course",
+        "duration_hours": 3,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Prompt Engineering": [
+      {
+        "title": "Prompt Engineering Guide",
+        "url": "https://www.promptingguide.ai/",
+        "type": "documentation",
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "JavaScript": [
+      {
+        "title": "freeCodeCamp JavaScript Algorithms",
+        "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/",
+        "type": "interactive",
+        "duration_hours": 40,
+        "difficulty": "beginner",
+        "free": true
+      },
+      {
+        "title": "JavaScript Full Course",
+        "url": "https://www.youtube.com/watch?v=PkZNo7MFNFg",
+        "type": "video_course",
+        "duration_hours": 12,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "React": [
+      {
+        "title": "React Official Tutorial",
+        "url": "https://react.dev/learn",
+        "type": "documentation",
+        "duration_hours": 10,
+        "difficulty": "beginner",
+        "free": true
+      },
+      {
+        "title": "React Crash Course",
+        "url": "https://www.youtube.com/watch?v=w7ejDZ8SWv8",
+        "type": "video_course",
+        "duration_hours": 5,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Node.js": [
+      {
+        "title": "Node.js Full Course",
+        "url": "https://www.youtube.com/watch?v=Oe421EPjeBE",
+        "type": "video_course",
+        "duration_hours": 12,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "REST APIs": [
+      {
+        "title": "REST API Crash Course",
+        "url": "https://www.youtube.com/watch?v=Q-BpqyOT3a8",
+        "type": "video_course",
+        "duration_hours": 2,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "System Design": [
+      {
+        "title": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer",
+        "type": "documentation",
+        "difficulty": "intermediate",
+        "free": true
+      }
+    ],
+
+    "Linux": [
+      {
+        "title": "Linux Command Line Full Course",
+        "url": "https://www.youtube.com/watch?v=ZtqBQ68cfJc",
+        "type": "video_course",
+        "duration_hours": 6,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Kubernetes": [
+      {
+        "title": "Kubernetes for Beginners",
+        "url": "https://www.youtube.com/watch?v=X48VuDVv0do",
+        "type": "video_course",
+        "duration_hours": 6,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Cybersecurity": [
+      {
+        "title": "Introduction to Cyber Security",
+        "url": "https://www.cisco.com/c/en/us/training-events/training-certifications/training/training-services/courses/introduction-to-cybersecurity.html",
+        "type": "video_course",
+        "duration_hours": 15,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Networking": [
+      {
+        "title": "Computer Networking Full Course",
+        "url": "https://www.youtube.com/watch?v=qiQR5rTSshw",
+        "type": "video_course",
+        "duration_hours": 8,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Product Management": [
+      {
+        "title": "Product Management 101",
+        "url": "https://www.youtube.com/watch?v=9JdP-SaV7fM",
+        "type": "video_course",
+        "duration_hours": 5,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "UI/UX Design": [
+      {
+        "title": "UI/UX Design Full Course",
+        "url": "https://www.youtube.com/watch?v=c9Wg6Cb_YlU",
+        "type": "video_course",
+        "duration_hours": 12,
+        "difficulty": "beginner",
+        "free": true
+      }
+    ],
+
+    "Cybersecurity Tools": [
+      {
+        "title": "TryHackMe Beginner Path",
+        "url": "https://tryhackme.com/",
+        "type": "interactive",
+        "difficulty": "beginner",
+        "free": true
+      }
+    ]
+
+  },
+
+  "project_ideas": {
+
+    "Data Analyst": [
+      {
+        "title": "COVID-19 Data Analysis Dashboard",
+        "description": "Analyze COVID trends using Python + Tableau",
+        "skills_demonstrated": ["SQL", "Python", "Data Visualization"],
+        "difficulty": "beginner",
+        "estimated_hours": 20,
+        "dataset_url": "https://ourworldindata.org/coronavirus"
+      },
+      {
+        "title": "E-commerce Sales Analysis",
+        "description": "Sales trends and insights dashboard",
+        "skills_demonstrated": ["SQL", "Excel", "Power BI"],
+        "difficulty": "beginner-intermediate",
+        "estimated_hours": 25
+      }
+    ],
+
+    "Software Engineer": [
+      {
+        "title": "REST API for Student Management",
+        "description": "Build CRUD APIs using Python + Flask",
+        "skills_demonstrated": ["Python", "REST APIs", "Git"],
+        "difficulty": "beginner-intermediate",
+        "estimated_hours": 30
+      }
+    ],
+
+    "ML Engineer": [
+      {
+        "title": "House Price Prediction",
+        "description": "End-to-end ML project with evaluation",
+        "skills_demonstrated": ["Machine Learning", "Python", "Statistics"],
+        "difficulty": "intermediate",
+        "estimated_hours": 35,
+        "dataset_url": "https://www.kaggle.com/c/house-prices-advanced-regression-techniques"
+      }
+    ],
+
+    "Frontend Developer": [
+      {
+        "title": "Personal Portfolio Website",
+        "description": "Responsive portfolio using HTML, CSS, JS",
+        "skills_demonstrated": ["HTML & CSS", "JavaScript"],
+        "difficulty": "beginner",
+        "estimated_hours": 15
+      },
+      {
+        "title": "Job Portal Frontend",
+        "description": "Frontend UI for job listings",
+        "skills_demonstrated": ["React", "JavaScript", "HTML & CSS"],
+        "difficulty": "intermediate",
+        "estimated_hours": 25
+      }
+    ],
+
+    "Backend Engineer": [
+      {
+        "title": "Authentication API",
+        "description": "JWT-based authentication service",
+        "skills_demonstrated": ["Python", "REST APIs", "SQL"],
+        "difficulty": "intermediate",
+        "estimated_hours": 30
+      }
+    ],
+
+    "DevOps Engineer": [
+      {
+        "title": "Dockerized Web Application",
+        "description": "Containerize a web app using Docker",
+        "skills_demonstrated": ["Docker", "Linux", "Git"],
+        "difficulty": "intermediate",
+        "estimated_hours": 25
+      },
+      {
+        "title": "CI/CD Pipeline",
+        "description": "Automated pipeline using GitHub Actions",
+        "skills_demonstrated": ["CI/CD", "Docker", "Git"],
+        "difficulty": "intermediate",
+        "estimated_hours": 30
+      }
+    ],
+
+    "Full Stack Developer": [
+      {
+        "title": "Career Guidance Web App",
+        "description": "Full stack app with backend APIs",
+        "skills_demonstrated": ["React", "Node.js", "REST APIs"],
+        "difficulty": "intermediate",
+        "estimated_hours": 40
+      }
+    ],
+
+    "Cloud Engineer": [
+      {
+        "title": "Deploy Web App on AWS",
+        "description": "Deploy scalable web application",
+        "skills_demonstrated": ["AWS", "Linux"],
+        "difficulty": "intermediate",
+        "estimated_hours": 25
+      }
+    ],
+
+    "Cybersecurity Analyst": [
+      {
+        "title": "Vulnerability Assessment Report",
+        "description": "Analyze vulnerabilities on test system",
+        "skills_demonstrated": ["Cybersecurity", "Networking"],
+        "difficulty": "intermediate",
+        "estimated_hours": 20
+      }
+    ],
+
+    "Product Manager": [
+      {
+        "title": "Product Requirement Document",
+        "description": "PRD for an EdTech platform",
+        "skills_demonstrated": ["Product Management", "Communication"],
+        "difficulty": "beginner",
+        "estimated_hours": 12
+      }
+    ],
+
+    "UI/UX Designer": [
+      {
+        "title": "Mobile App Redesign",
+        "description": "Redesign an existing mobile app UI",
+        "skills_demonstrated": ["UI/UX Design", "Figma"],
+        "difficulty": "beginner",
+        "estimated_hours": 18
+      }
+    ],
+
+    "AI Prompt Engineer": [
+      {
+        "title": "Prompt Library for Career Agent",
+        "description": "Create reusable prompts for LLM agents",
+        "skills_demonstrated": ["Prompt Engineering", "AI APIs"],
+        "difficulty": "beginner",
+        "estimated_hours": 10
+      }
+    ],
+
+    "Data Engineer": [
+      {
+        "title": "ETL Pipeline Project",
+        "description": "Build ETL pipeline using Python",
+        "skills_demonstrated": ["SQL", "ETL", "Python"],
+        "difficulty": "intermediate",
+        "estimated_hours": 35
+      }
+    ]
+  }
+}
