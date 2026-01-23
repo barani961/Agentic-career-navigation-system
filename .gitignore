@@ -1,6 +1,3 @@
 /__pycache__/
-/Readme_reference.md
+/Readme_references
 /.DS_Store
-/.env
-/.env.local
-/.env.*.local
