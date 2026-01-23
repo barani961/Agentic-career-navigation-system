@@ -267,55 +267,6 @@ class DatabaseManager:
         finally:
             self.return_connection(conn)
     
-    def update_step_status(self,
-                          session_id: str,
-                          step_number: int,
-                          status: str):
-        """Update step status (not_started, in_progress, completed, blocked, skipped)"""
-        conn = self.get_connection()
-        try:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                # Update step status
-                if status == "in_progress":
-                    cur.execute("""
-                        UPDATE step_progress
-                        SET status = %s,
-                            started_at = COALESCE(started_at, %s)
-                        WHERE session_id = %s AND step_number = %s
-                    """, (status, datetime.now(), session_id, step_number))
-                elif status == "blocked":
-                    # Also resolve any existing blockers when changing status away from blocked
-                    cur.execute("""
-                        UPDATE blockers
-                        SET resolved = TRUE, resolved_at = %s
-                        WHERE session_id = %s AND step_number = %s AND resolved = FALSE
-                    """, (datetime.now(), session_id, step_number))
-                    cur.execute("""
-                        UPDATE step_progress
-                        SET status = %s
-                        WHERE session_id = %s AND step_number = %s
-                    """, (status, session_id, step_number))
-                else:
-                    cur.execute("""
-                        UPDATE step_progress
-                        SET status = %s
-                        WHERE session_id = %s AND step_number = %s
-                    """, (status, session_id, step_number))
-                
-                # Update journey last activity
-                cur.execute("""
-                    UPDATE journeys
-                    SET last_activity = %s
-                    WHERE session_id = %s
-                """, (datetime.now(), session_id))
-                
-                conn.commit()
-        except Exception as e:
-            conn.rollback()
-            raise Exception(f"Failed to update step status: {e}")
-        finally:
-            self.return_connection(conn)
-    
     def get_step_progress(self, session_id: str) -> List[Dict]:
         """Get progress for all steps in a journey"""
         conn = self.get_connection()
