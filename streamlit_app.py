@@ -8,10 +8,6 @@ import requests
 import json
 from datetime import datetime
 import os
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
 
 # ========== CONFIGURATION ==========
 
@@ -97,8 +93,6 @@ if 'page' not in st.session_state:
     st.session_state.page = "home"
 if 'reevaluation_data' not in st.session_state:
     st.session_state.reevaluation_data = None
-if 'show_reevaluation' not in st.session_state:
-    st.session_state.show_reevaluation = False
 
 # ========== HELPER FUNCTIONS ==========
 
@@ -118,10 +112,6 @@ def call_api(endpoint, method="GET", data=None):
             response = requests.get(url)
         elif method == "POST":
             response = requests.post(url, json=data)
-        elif method == "PUT":
-            response = requests.put(url, json=data)
-        elif method == "DELETE":
-            response = requests.delete(url)
         
         if response.status_code == 200:
             return response.json(), None
@@ -148,65 +138,6 @@ def get_status_emoji(status):
         return "🔄"
     else:
         return "⏳"
-
-def complete_step_api(step_number, hours):
-    """API call to mark step as completed"""
-    data = {
-        "session_id": st.session_state.session_id,
-        "step_number": step_number,
-        "status": "completed",
-        "time_spent_hours": hours
-    }
-    
-    result, error = call_api("/api/progress", method="POST", data=data)
-    
-    if error:
-        st.error(f"❌ Failed to mark complete: {error}")
-        return False
-    
-    st.success(f"✅ Step {step_number} marked as completed!")
-    
-    # Check for re-evaluation
-    if result.get('should_reevaluate') and result.get('reevaluation'):
-        st.warning("🔄 Re-evaluation triggered based on your progress!")
-        st.session_state.reevaluation_data = result['reevaluation']
-        st.session_state.show_reevaluation = True
-    
-    # Clear form state
-    st.session_state[f'show_complete_form_{step_number}'] = False
-    st.rerun()
-
-def report_blocker_api(step_number, reason, hours):
-    """API call to report a blocker"""
-    if not reason or reason.strip() == "":
-        st.error("❌ Please describe what's blocking you")
-        return False
-    
-    data = {
-        "session_id": st.session_state.session_id,
-        "step_number": step_number,
-        "status": "blocked",
-        "blocker_reason": reason,
-        "time_spent_hours": hours
-    }
-    
-    result, error = call_api("/api/progress", method="POST", data=data)
-    
-    if error:
-        st.error(f"❌ Failed to report blocker: {error}")
-        return False
-    
-    st.error(f"🚫 Blocker reported for Step {step_number}")
-    
-    # Check for re-evaluation
-    if result.get('should_reevaluate') and result.get('reevaluation'):
-        st.warning("🔄 Re-evaluation triggered due to blocker!")
-        st.session_state.reevaluation_data = result['reevaluation']
-        st.session_state.show_reevaluation = True
-    
-    # Clear form state
-    st.session_state[f'show_blocker_form_{step_number}'] = False
-    st.rerun()
 
 # ========== PAGES ==========
 
@@ -384,7 +315,7 @@ def dashboard_page():
         analytics_tab(result)
 
 def roadmap_tab(journey, steps):
-    """Display roadmap with step cards - with complete workflow"""
+    """Display roadmap with step cards"""
     st.markdown(f"### 🎯 Target Role: **{journey['target_role']}**")
     
     roadmap = journey['roadmap']
@@ -441,180 +372,42 @@ def roadmap_tab(journey, steps):
                 if step_progress and step_progress.get('time_spent_hours'):
                     st.markdown(f"**Time Spent:** {step_progress['time_spent_hours']:.1f}h")
                 
-                # Show blocker reason if blocked (in the main card area)
-                if status == "blocked":
-                    blocker_info, blocker_error = call_api(f"/api/journey/{st.session_state.session_id}/step/{step_data['step_number']}/blocker")
-                    if blocker_info and not blocker_error and blocker_info.get('blocker', {}).get('reason'):
-                        st.markdown("---")
-                        st.markdown(f"**🚫 Blocker:** {blocker_info['blocker']['reason'][:100]}...")
-                
-                # Action buttons based on status
+                # Action buttons
                 if status == "not_started":
-                    if st.button(f"▶️ Start Step", key=f"start_{step_data['step_number']}", use_container_width=True):
-                        # Update step status to in_progress
-                        data = {
-                            "session_id": st.session_state.session_id,
-                            "step_number": step_data['step_number'],
-                            "status": "in_progress"
-                        }
-                        result, error = call_api("/api/progress", method="POST", data=data)
-                        if not error:
-                            st.success(f"✅ Step {step_data['step_number']} started!")
-                            st.rerun()
-                        else:
-                            st.error(f"Failed to start step: {error}")
+                    if st.button(f"▶️ Start", key=f"start_{i}"):
+                        st.info("In real app, mark as in_progress")
                 
                 elif status == "in_progress":
-                    st.markdown("**What do you want to do?**")
                     col_a, col_b = st.columns(2)
-                    
                     with col_a:
-                        if st.button("✅ Mark Done", key=f"complete_{step_data['step_number']}", use_container_width=True):
-                            st.session_state[f'step_action_{step_data["step_number"]}'] = 'complete'
-                            st.session_state[f'show_complete_form_{step_data["step_number"]}'] = True
-                            st.rerun()
-                    
+                        if st.button("✅", key=f"complete_{i}", help="Mark Complete"):
+                            mark_step_complete(step_data['step_number'])
                     with col_b:
-                        if st.button("🚫 Report Issue", key=f"block_{step_data['step_number']}", use_container_width=True):
-                            st.session_state[f'step_action_{step_data["step_number"]}'] = 'blocked'
-                            st.session_state[f'show_blocker_form_{step_data["step_number"]}'] = True
-                            st.rerun()
-                    
-                    # Completion form
-                    if st.session_state.get(f'show_complete_form_{step_data["step_number"]}', False):
-                        st.markdown("---")
-                        with st.form(f"complete_form_{step_data['step_number']}"):
-                            st.markdown(f"**Completing Step {step_data['step_number']}: {step_data['title']}**")
-                            hours = st.number_input(
-                                "How many hours did you spend on this step?", 
-                                min_value=0.0, 
-                                value=10.0,
-                                key=f"hours_complete_{step_data['step_number']}"
-                            )
-                            
-                            col_x, col_y = st.columns(2)
-                            with col_x:
-                                if st.form_submit_button("✅ Confirm Complete", use_container_width=True):
-                                    complete_step_api(step_data['step_number'], hours)
-                            with col_y:
-                                if st.form_submit_button("Cancel", use_container_width=True):
-                                    st.session_state[f'show_complete_form_{step_data["step_number"]}'] = False
-                                    st.rerun()
+                        if st.button("🚫", key=f"block_{i}", help="Report Blocker"):
+                            st.session_state[f'show_blocker_form_{i}'] = True
                     
                     # Blocker form
-                    if st.session_state.get(f'show_blocker_form_{step_data["step_number"]}', False):
-                        st.markdown("---")
-                        with st.form(f"blocker_form_{step_data['step_number']}"):
-                            st.markdown(f"**Reporting Issue on Step {step_data['step_number']}: {step_data['title']}**")
-                            reason = st.text_area(
-                                "What's blocking you? Describe the issue:",
-                                key=f"reason_{step_data['step_number']}",
-                                height=100
-                            )
-                            hours = st.number_input(
-                                "Hours spent before getting blocked", 
-                                min_value=0.0, 
-                                value=5.0,
-                                key=f"hours_blocker_{step_data['step_number']}"
-                            )
+                    if st.session_state.get(f'show_blocker_form_{i}', False):
+                        with st.form(f"blocker_form_{i}"):
+                            reason = st.text_area("What's blocking you?", key=f"reason_{i}")
+                            hours = st.number_input("Hours spent so far", min_value=0.0, key=f"hours_{i}")
                             
                             col_x, col_y = st.columns(2)
                             with col_x:
-                                if st.form_submit_button("🚫 Report Blocker", use_container_width=True):
-                                    report_blocker_api(step_data['step_number'], reason, hours)
+                                if st.form_submit_button("Submit"):
+                                    report_blocker(step_data['step_number'], reason, hours)
                             with col_y:
-                                if st.form_submit_button("Cancel", use_container_width=True):
-                                    st.session_state[f'show_blocker_form_{step_data["step_number"]}'] = False
+                                if st.form_submit_button("Cancel"):
+                                    st.session_state[f'show_blocker_form_{i}'] = False
                                     st.rerun()
                 
                 elif status == "completed":
                     st.success("✅ Completed")
-                    if step_progress and step_progress.get('completed_at'):
-                        st.caption(f"Completed: {step_progress['completed_at'][:10]}")
+                    if step_progress.get('completed_at'):
+                        st.caption(f"{step_progress['completed_at'][:10]}")
                 
                 elif status == "blocked":
                     st.error("🚫 Blocked")
-                    
-                    # Get blocker information
-                    blocker_info, blocker_error = call_api(f"/api/journey/{st.session_state.session_id}/step/{step_data['step_number']}/blocker")
-                    
-                    if blocker_info and not blocker_error:
-                        blocker = blocker_info.get('blocker', {})
-                        alternate_paths = blocker_info.get('alternate_paths', [])
-                        
-                        # Show blocker reason
-                        if blocker.get('reason'):
-                            st.markdown(f"**Reason:** {blocker['reason']}")
-                        
-                        if blocker.get('last_reported'):
-                            st.caption(f"Blocked on: {blocker['last_reported'][:10]}")
-                        
-                        if blocker.get('attempts'):
-                            st.caption(f"Attempts: {blocker['attempts']}")
-                        
-                        # Show alternate paths
-                        if alternate_paths:
-                            st.markdown("---")
-                            st.markdown("### 🔄 Alternate Paths")
-                            st.info("Here are some alternative approaches you can try:")
-                            
-                            for i, alt_path in enumerate(alternate_paths):
-                                with st.expander(f"💡 {alt_path.get('title', f'Alternative {i+1}')}", expanded=(i == 0)):
-                                    st.markdown(f"**{alt_path.get('description', '')}**")
-                                    
-                                    if alt_path.get('steps'):
-                                        st.markdown("**Steps:**")
-                                        for j, step in enumerate(alt_path['steps'], 1):
-                                            st.markdown(f"{j}. {step}")
-                                    
-                                    col_info1, col_info2 = st.columns(2)
-                                    with col_info1:
-                                        st.caption(f"⏱️ Estimated: {alt_path.get('estimated_weeks', 'N/A')} weeks")
-                                    with col_info2:
-                                        difficulty = alt_path.get('difficulty', 'similar')
-                                        difficulty_color = {
-                                            'easier': '🟢',
-                                            'similar': '🟡',
-                                            'harder': '🔴'
-                                        }.get(difficulty, '🟡')
-                                        st.caption(f"{difficulty_color} Difficulty: {difficulty.title()}")
-                                    
-                                    if alt_path.get('warning'):
-                                        st.warning(alt_path['warning'])
-                                    
-                                    # Button to apply this alternate path
-                                    if st.button(f"✅ Use This Approach", key=f"use_alt_{step_data['step_number']}_{i}", use_container_width=True):
-                                        st.info(f"💡 This would help you work around the blocker. Implementation coming soon!")
-                        else:
-                            # Generate alternate paths if not available
-                            if st.button("🔄 Generate Alternate Paths", key=f"gen_alt_{step_data['step_number']}", use_container_width=True):
-                                with st.spinner("Generating alternate paths..."):
-                                    blocker_id = blocker.get('id')
-                                    if blocker_id:
-                                        result, error = call_api(f"/api/blocker/{blocker_id}/generate-alternates", method="POST")
-                                        if not error:
-                                            st.success("Alternate paths generated! Refresh to see them.")
-                                            st.rerun()
-                    
-                    # Action buttons
-                    col_retry, col_resolve = st.columns(2)
-                    with col_retry:
-                        if st.button("🔄 Retry Step", key=f"retry_{step_data['step_number']}", use_container_width=True):
-                            # Update step status back to in_progress
-                            data = {
-                                "session_id": st.session_state.session_id,
-                                "step_number": step_data['step_number'],
-                                "status": "in_progress"
-                            }
-                            result, error = call_api("/api/progress", method="POST", data=data)
-                            if not error:
-                                st.success("Step status updated to in progress!")
-                                st.rerun()
-                    
-                    with col_resolve:
-                        if st.button("✅ Mark Resolved", key=f"resolve_{step_data['step_number']}", use_container_width=True):
-                            # This would mark the blocker as resolved
-                            st.info("Blocker resolution feature coming soon!")
             
             st.markdown('</div>', unsafe_allow_html=True)
             st.markdown("---")
@@ -657,85 +450,23 @@ def blockers_tab(blockers, steps):
     
     st.markdown("### 🚫 Active Blockers")
     
-    for blocker in blockers:
-        # Get step title
-        step_title = "Unknown Step"
-        for step in steps:
-            if step['step_number'] == blocker['step_number']:
-                # Try to get step title from journey
-                journey_result, _ = call_api(f"/api/journey/{st.session_state.session_id}/summary")
-                if journey_result:
-                    roadmap = journey_result.get('journey', {}).get('roadmap', [])
-                    if blocker['step_number'] <= len(roadmap):
-                        step_title = roadmap[blocker['step_number'] - 1].get('title', f"Step {blocker['step_number']}")
-                break
-        
-        with st.expander(f"🚫 Step {blocker['step_number']}: {step_title} - {blocker['reason'][:50]}...", expanded=True):
+    for idx, blocker in enumerate(blockers):
+        with st.expander(f"Step {blocker['step_number']} - {blocker['reason'][:50]}...", expanded=True):
             st.markdown(f"**Reason:** {blocker['reason']}")
             st.markdown(f"**Attempts:** {blocker['attempts']}")
             st.markdown(f"**First Reported:** {blocker['first_reported'][:10]}")
             st.markdown(f"**Last Reported:** {blocker['last_reported'][:10]}")
             
-            # Show alternate paths
-            alternate_paths = blocker.get('alternate_paths', [])
-            if alternate_paths:
-                st.markdown("---")
-                st.markdown("### 🔄 Alternate Paths Available")
-                for i, alt_path in enumerate(alternate_paths):
-                    with st.expander(f"💡 {alt_path.get('title', f'Alternative {i+1}')}", expanded=False):
-                        st.markdown(f"**{alt_path.get('description', '')}**")
-                        
-                        if alt_path.get('steps'):
-                            st.markdown("**Steps:**")
-                            for j, step in enumerate(alt_path['steps'], 1):
-                                st.markdown(f"{j}. {step}")
-                        
-                        col_info1, col_info2 = st.columns(2)
-                        with col_info1:
-                            st.caption(f"⏱️ Estimated: {alt_path.get('estimated_weeks', 'N/A')} weeks")
-                        with col_info2:
-                            difficulty = alt_path.get('difficulty', 'similar')
-                            difficulty_color = {
-                                'easier': '🟢',
-                                'similar': '🟡',
-                                'harder': '🔴'
-                            }.get(difficulty, '🟡')
-                            st.caption(f"{difficulty_color} Difficulty: {difficulty.title()}")
-                        
-                        if alt_path.get('warning'):
-                            st.warning(alt_path['warning'])
-            else:
-                # Generate alternate paths button
-                if st.button(f"🔄 Generate Alternate Paths", key=f"gen_alt_blocker_{blocker['id']}"):
-                    with st.spinner("Generating alternate paths..."):
-                        result, error = call_api(f"/api/blocker/{blocker['id']}/generate-alternates", method="POST")
-                        if not error:
-                            st.success("Alternate paths generated! Refresh to see them.")
-                            st.rerun()
-            
-            st.markdown("---")
-            col1, col2, col3 = st.columns(3)
+            col1, col2 = st.columns(2)
             with col1:
-                if st.button(f"✅ Mark Resolved", key=f"resolve_{blocker['id']}", use_container_width=True):
-                    # Call API to resolve blocker
-                    st.info("Blocker resolution API coming soon!")
+                if st.button(f"✅ Mark Resolved", key=f"blockers_tab_resolve_{blocker['id']}_{idx}"):
+                    # In real app: call API to resolve blocker
+                    st.success("Blocker resolved!")
             
             with col2:
-                if st.button(f"🔄 Retry Step", key=f"retry_blocker_{blocker['id']}", use_container_width=True):
-                    # Update step status back to in_progress
-                    data = {
-                        "session_id": st.session_state.session_id,
-                        "step_number": blocker['step_number'],
-                        "status": "in_progress"
-                    }
-                    result, error = call_api("/api/progress", method="POST", data=data)
-                    if not error:
-                        st.success("Step status updated to in progress!")
-                        st.rerun()
-            
-            with col3:
-                if st.button(f"📝 Update Blocker", key=f"update_{blocker['id']}", use_container_width=True):
-                    st.info("Use the roadmap tab to report an updated blocker reason")
+                if st.button(f"🔄 Update", key=f"blockers_tab_update_{blocker['id']}_{idx}"):
+                    # In real app: report blocker again
+                    st.info("Report blocker again to increment attempts")
 
 def analytics_tab(summary):
     """Show analytics and insights"""
@@ -830,7 +561,7 @@ def report_blocker(step_number, reason, hours):
         st.rerun()
 
 def reevaluation_page():
-    """Show re-evaluation results and alternatives with working rerouting"""
+    """Show re-evaluation results and alternatives"""
     st.markdown('<p class="main-header">🔄 Path Re-evaluation</p>', unsafe_allow_html=True)
     
     reeval = st.session_state.reevaluation_data
@@ -839,16 +570,13 @@ def reevaluation_page():
         st.error("No re-evaluation data available")
         if st.button("← Back to Dashboard"):
             st.session_state.page = "dashboard"
-            st.session_state.show_reevaluation = False
             st.rerun()
         return
     
-    st.markdown("---")
-    
     # Show triggers
-    st.markdown("### ⚠️ Issues Detected")
+    st.markdown("### ⚠️ Concerns Detected")
     
-    for trigger in reeval.get('triggers', []):
+    for trigger in reeval['triggers']:
         severity_color = {
             'low': '#3498db',
             'medium': '#f39c12',
@@ -862,111 +590,87 @@ def reevaluation_page():
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown(f"### 💬 {reeval.get('message', 'Your path needs re-evaluation')}")
+    st.markdown(f"### 💬 {reeval['message']}")
     
-    st.markdown("---")
-    
-    # Show action
-    action = reeval.get('action', 'continue')
-    
-    if action == "suggest_reroute":
-        st.markdown("### 🎯 **Recommended Alternative Paths**")
-        st.info("Based on your progress, these paths might be better suited for you:")
+    # Show alternatives
+    if reeval.get('alternatives') and len(reeval['alternatives']) > 0:
+        st.markdown("### 🎯 Recommended Alternative Paths")
         
-        alternatives = reeval.get('alternatives', [])
-        
-        if alternatives:
-            for i, alt in enumerate(alternatives):
-                with st.container():
-                    col1, col2 = st.columns([2.5, 1.5])
+        for i, alt in enumerate(reeval['alternatives']):
+            with st.container():
+                st.markdown(f"""
+                <div class="alternative-card">
+                    <h3>{alt['role']} - {alt['score']*100:.0f}% Match</h3>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                col1, col2 = st.columns([2, 1])
+                
+                with col1:
+                    st.markdown(f"**Why this is a better fit:**")
+                    st.markdown(alt['justification'])
                     
-                    with col1:
-                        st.markdown(f"""
-                        <div class="alternative-card">
-                            <h3>🎯 {alt['role']}</h3>
-                            <p style="color: #666; font-size: 0.9rem;">Match Score: <strong>{alt.get('total_score', 0)*100:.0f}%</strong></p>
-                        </div>
-                        """, unsafe_allow_html=True)
-                        
-                        st.markdown(f"**Why this is better:**")
-                        st.markdown(alt.get('justification', 'No details available'))
-                        
-                        st.markdown("**Market Insights:**")
-                        market = alt.get('market_data', {})
-                        col_m1, col_m2, col_m3 = st.columns(3)
-                        
-                        with col_m1:
-                            st.metric("Active Jobs", f"{market.get('total_jobs', 0):,}")
-                        with col_m2:
-                            st.metric("Entry Barrier", f"{market.get('entry_barrier', 0)*100:.0f}%")
-                        with col_m3:
-                            st.metric("Fresher Friendly", "Yes" if market.get('freshers_accepted') else "No")
-                    
-                    with col2:
-                        if st.button(f"🔄 Switch to {alt['role']}", key=f"switch_{i}", type="primary", use_container_width=True):
-                            switch_career_path(alt['role'], reeval['reevaluation_id'])
-                    
-                    # Roadmap preview
+                    st.markdown("**Market Data:**")
+                    market = alt['market_data']
+                    st.markdown(f"- 📊 Active Jobs: **{market['active_jobs']}**")
+                    st.markdown(f"- 🎯 Skill Match: **{market['skill_match']*100:.0f}%**")
+                    st.markdown(f"- 🚪 Entry Barrier: **{market['entry_barrier']*100:.0f}%**")
+                
+                with col2:
+                    if st.button(f"🔄 Switch to {alt['role']}", key=f"switch_{i}", type="primary"):
+                        accept_reroute(alt['role'])
+                
+                # Show roadmap preview
+                with st.expander(f"👁️ Preview Roadmap for {alt['role']}"):
                     if alt.get('roadmap') and alt['roadmap'].get('roadmap'):
-                        with st.expander(f"📋 View Roadmap for {alt['role']}"):
-                            for step in alt['roadmap']['roadmap']:
-                                st.markdown(f"**Step {step['step_number']}. {step['title']}** ({step['duration_weeks']} weeks)")
-                                st.caption(step['description'][:150] + ("..." if len(step['description']) > 150 else ""))
-                                if step.get('skills_covered'):
-                                    st.caption(f"Skills: {', '.join(step['skills_covered'][:3])}")
-                    
-                    st.markdown("---")
-        
-        # Option to continue
-        st.markdown("### 💪 Continue Current Path?")
-        st.warning("⚠️ You can continue with your current path, but be aware of the challenges ahead.")
-        
-        if st.button("➡️ Continue Current Path", use_container_width=True, type="secondary"):
-            st.session_state.page = "dashboard"
-            st.session_state.show_reevaluation = False
-            st.success("Continuing with current path. Good luck! 💪")
-            st.rerun()
+                        for step in alt['roadmap']['roadmap'][:3]:
+                            st.markdown(f"**{step['step_number']}. {step['title']}** ({step['duration_weeks']} weeks)")
+                            st.caption(step['description'][:100] + "...")
+                    else:
+                        st.info("Roadmap preview not available")
+                
+                st.markdown("---")
     
-    else:  # action == "continue"
-        st.markdown("### ✅ Keep Going!")
-        st.success("Your current path looks good. Keep making progress!")
-        
-        if st.button("← Back to Dashboard", use_container_width=True):
-            st.session_state.page = "dashboard"
-            st.session_state.show_reevaluation = False
-            st.rerun()
+    # Option to continue
+    st.markdown("### 💪 Or Continue Current Path")
+    
+    if reeval.get('current_path'):
+        current = reeval['current_path']
+        if current.get('can_continue'):
+            difficulty = current.get('difficulty', 'medium')
+            st.warning(f"⚠️ Continuing will be **{difficulty}** difficulty. Make sure you're ready!")
+            
+            if st.button("➡️ Continue Current Path", type="secondary"):
+                st.session_state.page = "dashboard"
+                st.session_state.reevaluation_data = None
+                st.success("Continuing with current path. Good luck!")
+                st.rerun()
 
-def switch_career_path(new_role, reevaluation_id):
-    """Switch to a new career path"""
+def accept_reroute(new_role):
+    """Accept a reroute to new role"""
+    reeval = st.session_state.reevaluation_data
+    
+    data = {
+        "session_id": st.session_state.session_id,
+        "reevaluation_id": reeval['reevaluation_id'],
+        "chosen_role": new_role,
+        "reason": "struggling"
+    }
+    
     with st.spinner(f"🔄 Switching to {new_role}..."):
-        data = {
-            "session_id": st.session_state.session_id,
-            "reevaluation_id": reevaluation_id,
-            "chosen_role": new_role,
-            "reason": "better_fit"
-        }
-        
         result, error = call_api("/api/reroute", method="POST", data=data)
         
         if error:
-            st.error(f"❌ Failed to switch: {error}")
+            st.error(f"Failed to reroute: {error}")
             return
         
         st.success(f"✅ Successfully switched to {new_role}!")
         st.balloons()
         
-        st.info(f"""
-        **Your career path has been updated!**
-        - New target role: **{new_role}**
-        - Your previous progress is preserved
-        - You have a fresh roadmap optimized for your current skills
-        
-        Let's start with the new path!
-        """)
-        
         st.session_state.page = "dashboard"
-        st.session_state.show_reevaluation = False
         st.session_state.reevaluation_data = None
+        
+        st.info("Your progress has been reset and you have a new roadmap. Let's start fresh!")
         
         st.rerun()
 
@@ -982,37 +686,35 @@ with st.sidebar:
         # Navigation
         st.markdown("### 📍 Navigation")
         
-        if st.button("📊 Dashboard", use_container_width=True, key="nav_dashboard"):
+        if st.button("📊 Dashboard", use_container_width=True):
             st.session_state.page = "dashboard"
-            st.session_state.show_reevaluation = False
             st.rerun()
         
-        if st.session_state.reevaluation_data and st.session_state.get('show_reevaluation', False):
-            if st.button("🔄 Re-evaluation", use_container_width=True, key="nav_reevaluation"):
+        if st.session_state.reevaluation_data:
+            if st.button("🔄 Re-evaluation", use_container_width=True):
                 st.session_state.page = "reevaluation"
                 st.rerun()
         
         st.markdown("---")
         
-        if st.button("🏠 New Assessment", use_container_width=True, key="nav_home"):
+        if st.button("🏠 New Assessment", use_container_width=True):
             st.session_state.session_id = None
             st.session_state.page = "home"
             st.session_state.reevaluation_data = None
-            st.session_state.show_reevaluation = False
             st.rerun()
     
     else:
-        st.info("👤 No active session")
+        st.info("No active session")
     
     st.markdown("---")
     
     st.markdown("### ⚙️ Settings")
-    api_url = st.text_input("API URL", value=API_BASE, key="api_url_setting")
+    api_url = st.text_input("API URL", value=API_BASE)
     if api_url != API_BASE:
-        st.info("💡 Tip: Set API_BASE environment variable to change this")
+        st.warning("API URL changed (restart to apply)")
     
     st.markdown("---")
-    st.caption("Built with ❤️ using Streamlit + FastAPI")
+    st.caption("Made with ❤️ using Streamlit")
 
 # ========== MAIN APP ==========
 
@@ -1024,14 +726,11 @@ def main():
         if st.session_state.session_id:
             dashboard_page()
         else:
-            st.error("❌ No active session. Please start a new assessment.")
+            st.error("No active session. Please start a new assessment.")
             st.session_state.page = "home"
             st.rerun()
     elif st.session_state.page == "reevaluation":
         reevaluation_page()
-    else:
-        st.session_state.page = "home"
-        st.rerun()
 
 if __name__ == "__main__":
     main()

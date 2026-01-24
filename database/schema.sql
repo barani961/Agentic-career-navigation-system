@@ -3,7 +3,7 @@
 
 -- Table 1: Users (optional - if you have user authentication)
 CREATE TABLE IF NOT EXISTS users (
-    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id VARCHAR(255) PRIMARY KEY,
     email VARCHAR(255) UNIQUE,
     name VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Table 2: Student Journeys (main table)
 CREATE TABLE IF NOT EXISTS journeys (
     session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
+    user_id VARCHAR(255),  -- Changed from UUID to VARCHAR to accept any string
     
     -- Role information
     desired_role VARCHAR(255) NOT NULL,  -- What student originally wanted
@@ -81,9 +81,6 @@ CREATE TABLE IF NOT EXISTS blockers (
     reason TEXT NOT NULL,
     category VARCHAR(100),  -- skill_difficulty, time_constraint, motivation, technical
     attempts INTEGER DEFAULT 1,
-    
-    -- Alternate paths (stored as JSONB)
-    alternate_paths JSONB,  -- Array of alternative approaches/roadmaps for this blocker
     
     -- Status
     resolved BOOLEAN DEFAULT FALSE,
@@ -187,7 +184,7 @@ CREATE TABLE IF NOT EXISTS market_snapshots (
 CREATE TABLE IF NOT EXISTS activity_log (
     id SERIAL PRIMARY KEY,
     session_id UUID REFERENCES journeys(session_id) ON DELETE CASCADE,
-    user_id UUID REFERENCES users(user_id) ON DELETE SET NULL,
+    user_id VARCHAR(255),  -- Changed from UUID to VARCHAR
     
     action VARCHAR(255) NOT NULL,  -- journey_started, step_completed, blocker_reported, etc.
     details JSONB,

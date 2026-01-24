@@ -40,7 +40,7 @@ class DatabaseManager:
         self.host = host or os.getenv("DB_HOST", "localhost")
         self.port = port or int(os.getenv("DB_PORT", 5432))
         self.database = database or os.getenv("DB_NAME", "career_agent")
-        self.user = user or os.getenv("DB_USER", "abdullah")
+        self.user = user or os.getenv("DB_USER", os.getenv("USER", "abdullah"))
         self.password = password or os.getenv("DB_PASSWORD", "")
         
         # Create connection pool
@@ -68,42 +68,6 @@ class DatabaseManager:
     def close_all(self):
         """Close all connections"""
         self.pool.closeall()
-    
-    # ========== USER MANAGEMENT ==========
-    
-    def create_user(self, user_id: str, user_name: str = None) -> str:
-        """
-        Create a new user if they don't exist
-        
-        Args:
-            user_id: UUID for the user
-            user_name: Optional name for the user
-            
-        Returns:
-            user_id
-        """
-        conn = self.get_connection()
-        try:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                # Check if user exists
-                cur.execute("SELECT user_id FROM users WHERE user_id = %s", (user_id,))
-                if cur.fetchone():
-                    return user_id
-                
-                # Create user if doesn't exist
-                cur.execute("""
-                    INSERT INTO users (user_id, created_at)
-                    VALUES (%s, NOW())
-                    ON CONFLICT (user_id) DO NOTHING
-                """, (user_id,))
-                conn.commit()
-            return user_id
-        except Exception as e:
-            conn.rollback()
-            # User might already exist, which is fine
-            return user_id
-        finally:
-            self.return_connection(conn)
     
     # ========== JOURNEY MANAGEMENT ==========
     
@@ -282,14 +246,38 @@ class DatabaseManager:
         finally:
             self.return_connection(conn)
     
+    def update_step_status(self, session_id: str, step_number: int, status: str):
+        """Update step status (in_progress, completed, blocked, etc.)"""
+        conn = self.get_connection()
+        try:
+            with conn.cursor() as cur:
+                # Update step status
+                cur.execute("""
+                    UPDATE step_progress
+                    SET status = %s,
+                        started_at = CASE WHEN status = 'not_started' AND %s = 'in_progress' THEN %s ELSE started_at END,
+                        updated_at = %s
+                    WHERE session_id = %s AND step_number = %s
+                """, (status, status, datetime.now(), datetime.now(), session_id, step_number))
+                
+                # Update journey last activity
+                cur.execute("""
+                    UPDATE journeys
+                    SET last_activity = %s
+                    WHERE session_id = %s
+                """, (datetime.now(), session_id))
+                
+                conn.commit()
+        finally:
+            self.return_connection(conn)
+    
     # ========== BLOCKERS ==========
     
     def record_blocker(self,
                       session_id: str,
                       step_number: int,
                       reason: str,
-                      category: str = None,
-                      alternate_paths: List[Dict] = None) -> int:
+                      category: str = None) -> int:
         """Record a blocker on a step"""
         conn = self.get_connection()
         try:
@@ -308,23 +296,21 @@ class DatabaseManager:
                         UPDATE blockers
                         SET attempts = attempts + 1,
                             last_reported = %s,
-                            reason = %s,
-                            alternate_paths = COALESCE(%s, alternate_paths)
+                            reason = %s
                         WHERE id = %s
                         RETURNING id
-                    """, (datetime.now(), reason, Json(alternate_paths) if alternate_paths else None, existing['id']))
+                    """, (datetime.now(), reason, existing['id']))
                     blocker_id = cur.fetchone()['id']
                 else:
                     # Create new blocker
                     cur.execute("""
                         INSERT INTO blockers (
                             session_id, step_number, reason, category,
-                            alternate_paths, first_reported, last_reported
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+                            first_reported, last_reported
+                        ) VALUES (%s, %s, %s, %s, %s, %s)
                         RETURNING id
                     """, (
                         session_id, step_number, reason, category,
-                        Json(alternate_paths) if alternate_paths else None,
                         datetime.now(), datetime.now()
                     ))
                     blocker_id = cur.fetchone()['id']
@@ -372,49 +358,6 @@ class DatabaseManager:
                 """, (session_id,))
                 
                 return [dict(row) for row in cur.fetchall()]
-        finally:
-            self.return_connection(conn)
-    
-    def get_blocker(self, blocker_id: int) -> Optional[Dict]:
-        """Get a specific blocker by ID"""
-        conn = self.get_connection()
-        try:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute("""
-                    SELECT * FROM blockers WHERE id = %s
-                """, (blocker_id,))
-                result = cur.fetchone()
-                return dict(result) if result else None
-        finally:
-            self.return_connection(conn)
-    
-    def get_blocker_by_step(self, session_id: str, step_number: int) -> Optional[Dict]:
-        """Get blocker for a specific step"""
-        conn = self.get_connection()
-        try:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute("""
-                    SELECT * FROM blockers
-                    WHERE session_id = %s AND step_number = %s AND resolved = FALSE
-                    ORDER BY last_reported DESC
-                    LIMIT 1
-                """, (session_id, step_number))
-                result = cur.fetchone()
-                return dict(result) if result else None
-        finally:
-            self.return_connection(conn)
-    
-    def update_blocker_alternate_paths(self, blocker_id: int, alternate_paths: List[Dict]):
-        """Update alternate paths for a blocker"""
-        conn = self.get_connection()
-        try:
-            with conn.cursor() as cur:
-                cur.execute("""
-                    UPDATE blockers
-                    SET alternate_paths = %s
-                    WHERE id = %s
-                """, (Json(alternate_paths), blocker_id))
-                conn.commit()
         finally:
             self.return_connection(conn)
     
