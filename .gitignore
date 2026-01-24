@@ -1,7 +1,36 @@
 /__pycache__/
 /Readme_references
 /.DS_Store
+
+# Environment Variables
 .env
-.env.example
+.env.local
+.env.*.local
+
+# Streamlit Secrets (deployment)
+.streamlit/secrets.toml
+
+# IDE
 .vscode/
 .idea/
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+.pytest_cache/
+.mypy_cache/
