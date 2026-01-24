@@ -1489,7 +1489,7 @@ with st.sidebar:
                 st.rerun()
 
     st.markdown("---")
-    st.caption("Made with ❤️ for Hackathon")
+    st.caption("Made with ❤️ for your career growth.")
 ##========== MAIN ROUTING ==========
 def main():
     """Main app routing"""
