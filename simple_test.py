@@ -11,6 +11,7 @@ one per agent, each with its output + a short reasoning string.
 
 import os
 import json
+from dotenv import load_dotenv
 from llm.llm_client import LLMClient
 from orchestrator import load_data_files, CareerAgentOrchestrator
 
@@ -28,6 +29,9 @@ def run_interactive_agents():
     print("\n" + "=" * 70)
     print("🚀 CAREER AGENT SYSTEM - INTERACTIVE AGENT TEST")
     print("=" * 70)
+
+    # Load environment variables
+    load_dotenv()
 
     # 1) Check API key
     api_key = os.getenv("GROQ_API_KEY")

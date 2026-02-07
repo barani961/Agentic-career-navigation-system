@@ -6,6 +6,7 @@ Coordinates all agents to provide complete career guidance
 import json
 from typing import Dict, List, Any, Optional
 import uuid
+from dotenv import load_dotenv
 
 from agents.profile_analyzer import ProfileAnalyzer
 from agents.market_intelligence import MarketIntelligenceAgent
@@ -416,6 +417,9 @@ def load_data_files(data_dir: str = None) -> tuple:
 
 # Example usage
 if __name__ == "__main__":
+    # Load environment variables
+    load_dotenv()
+    
     # Initialize LLM
     llm = LLMClient()
     
@@ -433,7 +437,7 @@ if __name__ == "__main__":
     
     # Test query
     result = orchestrator.process_student_query(
-        desired_role="Machine Learning Engineer",
+        desired_role="ML Engineer",
         skills_text="I know Python basics and have done some web scraping",
         education="3rd year Computer Science",
         projects=["Built a Django website", "Web scraping project"],
