@@ -92,6 +92,10 @@ class LLMClient:
 
 # Example usage and testing
 if __name__ == "__main__":
+    # Load environment variables
+    from dotenv import load_dotenv
+    load_dotenv()
+    
     print("="*60)
     print("GROQ LLM CLIENT TEST")
     print("="*60)

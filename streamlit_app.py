@@ -1,6 +1,7 @@
 """
 Streamlit UI for Career Agent System
 Complete testing interface with all features
+using the backend API
 """
 
 import streamlit as st
